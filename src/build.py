@@ -37,6 +37,8 @@ def foot(d):
         out += f'<p class="foot">{e(d["foot"])}</p>'
     if d.get("link"):
         out += f'<a class="link" href="{html.escape(d["link"])}" target="_blank" rel="noopener">{html.escape(d["link"])}</a>'
+    if d.get("dl"):
+        out += f'<a class="dl big" href="{html.escape(d["dl"])}" download="嚴格作文評審.zip">⬇ 下載技能檔（嚴格作文評審.zip）</a>'
     if d.get("src"):
         out += f'<p class="src">資料來源｜{e(d["src"])}</p>'
     return out
@@ -70,6 +72,9 @@ def render(d):
     if t == "shot2":
         imgs = "".join(f'<img src="{SHOT}{i}" alt="">' for i in d["imgs"])
         return f'{head(d)}<div class="shot two">{imgs}</div>{foot(d)}'
+    if t == "compare":
+        figs = "".join(f'<figure><img src="{SHOT}{i}" alt=""><figcaption>{e(c)}</figcaption></figure>' for i, c in d["imgs"])
+        return f'{head(d)}<div class="shot two">{figs}</div>{foot(d)}'
     if t == "shotText":
         ps = "".join(f"<p>{e(x)}</p>" for x in d["text"])
         return f'{head(d)}<div class="st"><div class="st-img"><img src="{SHOT}{d["img"]}" alt=""></div><div class="st-text">{ps}</div></div>{foot(d)}'
@@ -126,18 +131,29 @@ def sup_html(n):
         cl = f'<div class="cl"><b>課堂可以這樣做</b><ol>{cl}</ol></div>' if cl else ""
         url = f' <a href="{html.escape(it["url"])}" target="_blank" rel="noopener">原文</a>' if it.get("url") else ""
         ev = it.get("evidence", "")
+        code = ""
+        if it.get("code"):
+            code = f'<div class="code"><button class="copy">複製</button><pre>{html.escape(it["code"])}</pre></div>'
+        if it.get("download"):
+            code += f'<p><a class="dl" href="{html.escape(it["download"])}" download>⬇ {e(it.get("download_label","下載"))}</a></p>'
         out.append(f'''<article class="sup"><div class="sup-k"><span class="kind">{e(it.get("kind",""))}</span><span class="ev ev-{html.escape(ev)}">{e(ev)}</span></div>
-<h4>{e(it["title"])}</h4><ul>{pts}</ul>{cl}<p class="sup-src">{e(it.get("source",""))}{url}</p></article>''')
+<h4>{e(it["title"])}</h4><ul>{pts}</ul>{cl}{code}<p class="sup-src">{e(it.get("source",""))}{url}</p></article>''')
     return "".join(out), len(items)
 
 
 slides, side = [], []
-for i, d in enumerate(S, 1):
+canva, sub = 0, 0
+for d in S:
+    # extra=True 的頁是 HTML 版新增，編號接在前一頁後面（23-1、23-2…），其餘頁碼與 Canva 一致
+    if d.get("extra"):
+        sub += 1; label = f"{canva}-{sub}"; note = d.get("notes", "")
+    else:
+        canva += 1; sub = 0; label = str(canva); note = notes.get(canva, "")
     body = render(d)
-    sh, cnt = sup_html(i)
-    badge = f'<button class="supbtn" data-n="{i}" title="補充資料（S）">📎 補充（{cnt} 則）</button>' if cnt else ""
-    slides.append(f'<section class="slide t-{d["t"]}" id="p{i}" data-n="{i}"><div class="inner">{body}</div>{badge}<div class="pno">{i}</div></section>')
-    side.append({"n": i, "notes": notes.get(i, ""), "sup": sh})
+    sh, cnt = sup_html(label)
+    badge = f'<button class="supbtn" title="補充資料（S）">📎 補充（{cnt} 則）</button>' if cnt else ""
+    slides.append(f'<section class="slide t-{d["t"]}" id="p{label}" data-label="{label}"><div class="inner">{body}</div>{badge}<div class="pno">{label}</div></section>')
+    side.append({"n": label, "notes": note, "sup": sh})
 
 tpl = open(os.path.join(BASE, "template.html")).read()
 out = tpl.replace("<!--SLIDES-->", "\n".join(slides)).replace("/*SIDE*/[]", json.dumps(side, ensure_ascii=False))

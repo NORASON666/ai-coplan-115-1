@@ -130,6 +130,11 @@ ol.bul li::marker{font-weight:900;color:var(--blue)}
 .cl{margin-top:10px;background:#F1F8FE;border-radius:10px;padding:8px 12px}
 .sup-src{margin:10px 0 0;font-size:14px;color:var(--muted)}
 .empty{color:var(--muted)}
+.code{position:relative;margin-top:10px}.code pre{white-space:pre-wrap;background:#F3F7FB;border:1px solid var(--line);border-radius:10px;padding:12px;font-size:14px;line-height:1.6;max-height:420px;overflow:auto}
+.copy{position:absolute;right:8px;top:8px;font:700 13px 'Noto Sans TC';background:var(--navy);color:#fff;border:none;border-radius:12px;padding:4px 10px;cursor:pointer}
+.dl.big{font-size:34px;padding:14px 30px;border-radius:30px;align-self:flex-start;margin-top:10px}
+.dl{display:inline-block;background:var(--orange);color:#fff;font-weight:700;border-radius:14px;padding:6px 14px;text-decoration:none}
+.shot.two figure{margin:0;flex:1;display:flex;flex-direction:column;align-items:center;height:100%;min-height:0}.shot.two figure img{max-width:100%;flex:1;min-height:0}.shot.two figcaption{font:900 40px 'Noto Sans TC';margin-top:14px}
 /* 控制列 */
 #bar{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);display:flex;gap:8px;z-index:10;padding:6px;background:rgba(255,255,255,.9);border:2px solid var(--navy);border-radius:24px;box-shadow:0 4px 14px rgba(30,58,110,.25)}
 #bar button{font:700 16px "Noto Sans TC";border:none;background:var(--navy);color:#fff;border-radius:16px;padding:8px 14px;cursor:pointer}
@@ -161,19 +166,20 @@ let cur=0, tab='sup';
 const panel=document.getElementById('panel'), pbody=document.getElementById('pbody');
 function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);document.getElementById('deck').style.transform=`scale(${s})`;}
 function show(i){cur=Math.max(0,Math.min(slides.length-1,i));slides.forEach((s,k)=>s.classList.toggle('on',k===cur));
-  history.replaceState(null,'','#p'+(cur+1));document.getElementById('prog').style.width=((cur+1)/slides.length*100)+'%';renderPanel();}
-function renderPanel(){const d=SIDE[cur];
+  history.replaceState(null,'','#p'+slides[cur].dataset.label);document.getElementById('prog').style.width=((cur+1)/slides.length*100)+'%';renderPanel();}
+function renderPanel(){const d=SIDE[cur];setTimeout(bindCopy,0);
   document.querySelectorAll('#panel header [data-tab]').forEach(b=>b.classList.toggle('act',b.dataset.tab===tab));
   if(tab==='sup') pbody.innerHTML=d.sup||'<p class="empty">這頁沒有補充資料。</p>';
   else if(d.notes){pbody.innerHTML='<div class="notes"></div>';pbody.firstChild.textContent=d.notes;}
   else pbody.innerHTML='<p class="empty">這頁沒有講稿。</p>';}
+function bindCopy(){pbody.querySelectorAll('.copy').forEach(b=>b.onclick=()=>{navigator.clipboard.writeText(b.nextElementSibling.textContent);b.textContent='已複製';setTimeout(()=>b.textContent='複製',1500);});}
 function openPanel(t){if(panel.classList.contains('open')&&tab===t){panel.classList.remove('open');return;}tab=t;panel.classList.add('open');renderPanel();}
 document.querySelectorAll('#panel header [data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;renderPanel();});
 panel.querySelector('.x').onclick=()=>panel.classList.remove('open');
 document.querySelectorAll('.supbtn').forEach(b=>b.onclick=()=>{tab='sup';panel.classList.add('open');renderPanel();});
 const grid=document.getElementById('grid');
 grid.innerHTML=slides.map((s,k)=>{const t=(s.querySelector('h1,h2,.situation')||s).textContent.trim().slice(0,40);
-  return `<button data-k="${k}" class="${SIDE[k].sup?'has':''}"><b>${k+1}</b>${t}</button>`}).join('');
+  return `<button data-k="${k}" class="${SIDE[k].sup?'has':''}"><b>${slides[k].dataset.label}</b>${t}</button>`}).join('');
 grid.onclick=e=>{const b=e.target.closest('button');if(b){show(+b.dataset.k);grid.classList.remove('open');}};
 function full(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
 bPrev.onclick=()=>show(cur-1);bNext.onclick=()=>show(cur+1);bGrid.onclick=()=>grid.classList.toggle('open');
@@ -188,7 +194,7 @@ addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('input,text
 let tx=null;addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
 addEventListener('touchend',e=>{if(tx===null||panel.contains(e.target))return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)show(cur+(dx<0?1:-1));tx=null;});
 addEventListener('resize',fit);fit();
-const m=location.hash.match(/p(\d+)/);show(m?+m[1]-1:0);
+const m=location.hash.match(/^#p([\d-]+)$/);const k0=m?slides.findIndex(s=>s.dataset.label===m[1]):0;show(k0<0?0:k0);
 </script>
 </body>
 </html>
