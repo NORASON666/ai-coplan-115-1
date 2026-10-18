@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 工具衝擊下的教學因應策略｜115-1 資訊人員分區共備</title>
+<meta name="description" content="臺北市科技領域輔導團國小分團 115 學年度上學期資訊人員分區共備（南港／內湖區）簡報與補充資料。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=LXGW+WenKai+TC:wght@400;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E3A6E; --ink:#22314d; --blue:#3B82C4; --sky:#5AA9E6; --pale:#DCEEFB; --paper:#FBFDFF;
+  --orange:#F0A23B; --soft:#F3F7FB; --line:#C9D9EA; --muted:#5d6b80;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#E9EFF6;color:var(--ink);font-family:"Noto Sans TC",system-ui,sans-serif}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#deck{width:1920px;height:1080px;position:relative;transform-origin:center center;flex:none}
+.slide{position:absolute;inset:0;background:var(--paper);display:none;overflow:hidden;
+  background-image:radial-gradient(circle at 1px 1px,#e3ecf6 1px,transparent 0);background-size:28px 28px}
+.slide.on{display:block}
+.slide:not(.t-cover):not(.t-closing):not(.t-divider)::after{content:"";position:absolute;right:60px;top:36px;width:360px;height:160px;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='360' height='160'><path d='M10 140 C 90 150 120 60 200 90 S 280 40 300 40' fill='none' stroke='%235AA9E6' stroke-width='3' stroke-dasharray='8 9'/><path d='M300 40 l52 -24 -18 50 -12 -16 z' fill='white' stroke='%231E3A6E' stroke-width='3' stroke-linejoin='round'/></svg>") no-repeat;opacity:.7;pointer-events:none}
+.slide::before{content:"";position:absolute;left:0;right:0;bottom:0;height:14px;background:linear-gradient(90deg,var(--sky),var(--pale) 60%,var(--orange))}
+.inner{position:absolute;inset:70px 120px 70px 120px;display:flex;flex-direction:column}
+.pno{position:absolute;right:40px;bottom:30px;font:600 30px Caveat,cursive;color:var(--blue)}
+.kicker{font:700 30px "LXGW WenKai TC",serif;color:var(--blue);letter-spacing:.06em;margin-bottom:6px}
+.kicker::before{content:"✎ ";color:var(--orange)}
+.kicker.big{font-size:44px}
+.title{margin:0 0 40px;font-weight:900;font-size:76px;color:var(--navy);line-height:1.15}
+.title span{background:linear-gradient(transparent 62%,var(--pale) 62%);padding:0 10px;
+  border-bottom:6px solid var(--orange);border-radius:0 0 40px 6px/0 0 10px 4px}
+.foot{font-size:38px;font-weight:700;color:var(--navy);margin:28px 0 0;padding:14px 24px;background:#FFF6E6;border-left:10px solid var(--orange);border-radius:6px}
+.src{position:absolute;left:0;bottom:-34px;margin:0;font-size:22px;color:var(--muted)}
+.link{font-size:32px;color:var(--blue);margin-top:20px;font-weight:700}
+mark{background:linear-gradient(transparent 55%,var(--pale) 55%);color:inherit}
+/* 封面 */
+.cover{position:absolute;inset:-70px -120px;display:flex;align-items:center;justify-content:center}
+.cover .ill{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cover-text{position:relative;text-align:center;background:rgba(251,253,255,.82);padding:40px 70px;border-radius:40px;box-shadow:0 0 60px 30px rgba(251,253,255,.85)}
+.cover .org{font:700 34px "LXGW WenKai TC",serif;color:var(--blue)}
+.cover h1{font-weight:900;font-size:112px;line-height:1.15;color:var(--navy);margin:18px 0}
+.cover h1 mark{border-bottom:8px solid var(--orange)}
+.cover .meta{font-size:40px;font-weight:700;color:var(--ink)}
+.cover .who{margin-top:26px;display:flex;gap:40px;justify-content:center;font-size:36px}
+.cover .who b{font:700 46px "LXGW WenKai TC",serif;color:#B5462E}
+.cover .hand{font:600 80px Caveat,cursive;color:var(--blue)}
+/* 章節頁 */
+.divider{display:flex;align-items:center;height:100%;gap:60px}
+.dv-text{flex:1}
+.dv-title{font-weight:900;font-size:130px;color:var(--navy);margin:10px 0;line-height:1.1}
+.dv-sub{font:700 60px "LXGW WenKai TC",serif;color:var(--ink);border-bottom:8px solid var(--orange);display:inline-block;padding-bottom:6px}
+.dv-ill{width:760px;height:760px;flex:none}
+.dv-ill .ill{width:100%;height:100%;object-fit:contain}
+/* 條列 */
+.bul{margin:auto 0;padding-left:1.2em;font-size:50px;line-height:1.55}
+.bul li{margin:8px 0}
+.bul li::marker{color:var(--orange)}
+.bul li.hl{font-weight:700;color:var(--navy)}
+ol.bul li::marker{font-weight:900;color:var(--blue)}
+/* 卡片：手繪框 */
+.cards{display:grid;gap:34px;flex:1;align-content:center}
+.c2{grid-template-columns:repeat(2,1fr)}.c3{grid-template-columns:repeat(3,1fr)}.c4{grid-template-columns:repeat(4,1fr)}.c1{grid-template-columns:1fr}
+.card{position:relative;background:#fff;border:3px solid var(--navy);padding:30px 34px;
+  border-radius:255px 18px 225px 18px/18px 225px 18px 255px;box-shadow:8px 10px 0 var(--pale)}
+.card h3{margin:0 0 14px;font-size:44px;font-weight:900;color:var(--navy)}
+.card p{margin:0;font-size:36px;line-height:1.5}
+.card .note{margin-top:18px;font:700 30px "LXGW WenKai TC",serif;color:#B5462E}
+.card .num{width:64px;height:64px;border-radius:50%;background:var(--orange);color:#fff;font:900 38px/64px "Noto Sans TC";text-align:center;margin-bottom:14px}
+.arrows .card:not(:last-child)::after{content:"➜";position:absolute;right:-36px;top:46%;font-size:40px;color:var(--orange)}
+.rd1{background:#F1F8FE}
+.stat .big{font:900 92px "Noto Sans TC";color:var(--blue);line-height:1.1;margin-bottom:10px}
+/* 步驟 */
+.steps{list-style:none;margin:auto 0;padding:0;display:flex;flex-direction:column;gap:34px}
+.steps li{display:flex;align-items:center;gap:30px;font-size:50px;font-weight:700;color:var(--navy);background:#fff;
+  border:3px solid var(--navy);padding:22px 34px;border-radius:18px 255px 18px 225px/225px 18px 255px 18px;box-shadow:8px 10px 0 var(--pale)}
+.steps .num{flex:none;width:80px;height:80px;border-radius:50%;background:var(--sky);color:#fff;font:900 46px/80px "Noto Sans TC";text-align:center}
+.qs li{font-weight:500;font-size:44px;color:var(--ink)}
+.qs .num:empty{display:none}
+.situation{font-size:52px;font-weight:900;color:var(--navy);margin:16px 0 40px;line-height:1.4}
+.situation .tag{display:inline-block;font-size:30px;background:var(--orange);color:#fff;border-radius:12px;padding:4px 18px;margin-right:18px;vertical-align:middle}
+/* 表格 */
+.tbl{margin:auto 0;border-collapse:separate;border-spacing:0;width:100%;font-size:40px;background:#fff;border:3px solid var(--navy);border-radius:20px;overflow:hidden}
+.tbl th{background:var(--navy);color:#fff;padding:22px;font-size:42px}
+.tbl td{padding:26px 22px;border-top:2px dashed var(--line);text-align:center;height:110px}
+.tbl td:first-child{font-weight:700;color:var(--navy)}
+.tbl th:nth-child(3),.tbl td:nth-child(3){background:#FFF8EC}
+.tbl th:nth-child(3){background:#B9741C}
+/* 圖片 */
+.shot{flex:1;display:flex;justify-content:center;align-items:center;min-height:0;gap:40px}
+.shot img{height:100%;width:auto;max-width:100%;object-fit:contain;border:3px solid var(--navy);border-radius:14px;box-shadow:12px 14px 0 var(--pale);background:#fff}
+.shot.two img{max-width:48%}
+.st{display:flex;gap:60px;flex:1;min-height:0;align-items:center}
+.st-img{flex:1.15;display:flex;justify-content:center;min-height:0;height:100%;align-items:center}
+.st-img img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 2px #1E3A6E) drop-shadow(12px 14px 0 #DCEEFB)}
+.st-text{flex:1}
+.st-text p{font-size:42px;line-height:1.6;margin:0 0 28px}
+.st-text p b{color:#B5462E}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.ill{mix-blend-mode:multiply}
+.illus{flex:1;min-height:0;display:flex;justify-content:center}
+.illus .ill{height:100%;max-width:100%;object-fit:contain;border-radius:24px}
+.ill.missing{display:flex;align-items:center;justify-content:center;border:4px dashed var(--line);color:var(--muted);font-size:40px;width:70%;border-radius:30px}
+.quote{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;margin:0;font:700 72px/1.55 "LXGW WenKai TC",serif;color:var(--navy)}
+.quote.q2{flex:none;font-size:64px;margin:20px 0 40px}
+.aiday{display:flex;gap:60px;align-items:center;flex:1}
+.aiday .bul{flex:1;font-size:44px}
+.qr{width:420px;border:3px solid var(--navy);border-radius:14px;background:#fff;padding:10px}
+.srcs{display:grid;grid-template-columns:1fr 1fr;gap:40px;font-size:31px;line-height:1.6}
+.srcs ul{margin:0;padding-left:1em}
+/* 補充按鈕 */
+.supbtn{position:absolute;right:110px;bottom:24px;font:700 28px "Noto Sans TC";color:#fff;background:var(--blue);border:none;border-radius:30px;padding:10px 26px;cursor:pointer;box-shadow:0 4px 0 var(--navy)}
+.supbtn:hover{background:var(--navy)}
+/* 側欄（補充／講稿） */
+#panel{position:fixed;top:0;right:0;bottom:0;width:min(560px,92vw);background:#fff;box-shadow:-8px 0 30px rgba(30,58,110,.18);transform:translateX(102%);transition:transform .25s;z-index:20;display:flex;flex-direction:column}
+#panel.open{transform:none}
+#panel header{display:flex;gap:8px;padding:14px 16px;border-bottom:2px solid var(--pale);align-items:center}
+#panel header button{font:700 16px "Noto Sans TC";border:2px solid var(--navy);background:#fff;color:var(--navy);border-radius:20px;padding:6px 14px;cursor:pointer}
+#panel header button.act{background:var(--navy);color:#fff}
+#panel header .x{margin-left:auto;border:none;font-size:22px}
+#pbody{overflow:auto;padding:18px 20px 40px;font-size:17px;line-height:1.7}
+#pbody .notes{white-space:pre-wrap}
+.sup{border:2px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:16px}
+.sup h4{margin:6px 0 8px;font-size:19px;color:var(--navy)}
+.sup ul,.sup ol{margin:0;padding-left:1.3em}
+.sup-k{display:flex;gap:8px;font-size:13px}
+.kind{background:var(--pale);color:var(--navy);border-radius:8px;padding:1px 8px;font-weight:700}
+.ev{border-radius:8px;padding:1px 8px;background:#eef1f5;color:var(--muted)}
+.ev-AI\ 生成待查證{background:#FFF1DC;color:#9A5B10}
+.cl{margin-top:10px;background:#F1F8FE;border-radius:10px;padding:8px 12px}
+.sup-src{margin:10px 0 0;font-size:14px;color:var(--muted)}
+.empty{color:var(--muted)}
+/* 控制列 */
+#bar{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);display:flex;gap:6px;z-index:10;opacity:.25;transition:opacity .2s}
+#bar:hover,#bar:focus-within{opacity:1}
+#bar button{font:700 14px "Noto Sans TC";border:none;background:var(--navy);color:#fff;border-radius:16px;padding:7px 12px;cursor:pointer}
+#prog{position:fixed;left:0;top:0;height:4px;background:var(--orange);z-index:10;transition:width .2s}
+/* 總覽 */
+#grid{position:fixed;inset:0;background:rgba(233,239,246,.97);z-index:30;overflow:auto;display:none;padding:24px}
+#grid.open{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;align-content:start}
+#grid button{border:2px solid var(--line);background:#fff;border-radius:10px;padding:10px;text-align:left;cursor:pointer;font:500 14px "Noto Sans TC";color:var(--ink);min-height:70px}
+#grid button b{color:var(--blue);margin-right:6px}
+#grid button.has::after{content:" 📎";}
+@media print{#bar,#panel,#prog,.supbtn{display:none}}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<div id="stage"><div id="deck">
+<!--SLIDES-->
+</div></div>
+<aside id="panel" aria-label="補充資料與講稿"><header>
+<button data-tab="sup" class="act">📎 補充資料</button><button data-tab="notes">🗒 講稿</button>
+<button class="x" aria-label="關閉">✕</button></header><div id="pbody"></div></aside>
+<div id="grid"></div>
+<nav id="bar"><button id="bPrev">◀</button><button id="bGrid">總覽 O</button><button id="bSup">補充 S</button><button id="bNotes">講稿 N</button><button id="bFull">全螢幕 F</button><button id="bNext">▶</button></nav>
+<script>
+const SIDE=/*SIDE*/[];
+const slides=[...document.querySelectorAll('.slide')];
+let cur=0, tab='sup';
+const panel=document.getElementById('panel'), pbody=document.getElementById('pbody');
+function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);document.getElementById('deck').style.transform=`scale(${s})`;}
+function show(i){cur=Math.max(0,Math.min(slides.length-1,i));slides.forEach((s,k)=>s.classList.toggle('on',k===cur));
+  history.replaceState(null,'','#p'+(cur+1));document.getElementById('prog').style.width=((cur+1)/slides.length*100)+'%';renderPanel();}
+function renderPanel(){const d=SIDE[cur];
+  document.querySelectorAll('#panel header [data-tab]').forEach(b=>b.classList.toggle('act',b.dataset.tab===tab));
+  if(tab==='sup') pbody.innerHTML=d.sup||'<p class="empty">這頁沒有補充資料。</p>';
+  else if(d.notes){pbody.innerHTML='<div class="notes"></div>';pbody.firstChild.textContent=d.notes;}
+  else pbody.innerHTML='<p class="empty">這頁沒有講稿。</p>';}
+function openPanel(t){if(panel.classList.contains('open')&&tab===t){panel.classList.remove('open');return;}tab=t;panel.classList.add('open');renderPanel();}
+document.querySelectorAll('#panel header [data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;renderPanel();});
+panel.querySelector('.x').onclick=()=>panel.classList.remove('open');
+document.querySelectorAll('.supbtn').forEach(b=>b.onclick=()=>{tab='sup';panel.classList.add('open');renderPanel();});
+const grid=document.getElementById('grid');
+grid.innerHTML=slides.map((s,k)=>{const t=(s.querySelector('h1,h2,.situation')||s).textContent.trim().slice(0,40);
+  return `<button data-k="${k}" class="${SIDE[k].sup?'has':''}"><b>${k+1}</b>${t}</button>`}).join('');
+grid.onclick=e=>{const b=e.target.closest('button');if(b){show(+b.dataset.k);grid.classList.remove('open');}};
+function full(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
+bPrev.onclick=()=>show(cur-1);bNext.onclick=()=>show(cur+1);bGrid.onclick=()=>grid.classList.toggle('open');
+bSup.onclick=()=>openPanel('sup');bNotes.onclick=()=>openPanel('notes');bFull.onclick=full;
+addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('input,textarea'))return;
+  const k=e.key;if(['ArrowRight','PageDown',' ','Enter'].includes(k)){e.preventDefault();show(cur+1);}
+  else if(['ArrowLeft','PageUp','Backspace'].includes(k)){e.preventDefault();show(cur-1);}
+  else if(k==='Home')show(0);else if(k==='End')show(slides.length-1);
+  else if(k==='o'||k==='O')grid.classList.toggle('open');else if(k==='s'||k==='S')openPanel('sup');
+  else if(k==='n'||k==='N')openPanel('notes');else if(k==='f'||k==='F')full();
+  else if(k==='Escape'){grid.classList.remove('open');panel.classList.remove('open');}});
+let tx=null;addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+addEventListener('touchend',e=>{if(tx===null||panel.contains(e.target))return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)show(cur+(dx<0?1:-1));tx=null;});
+addEventListener('resize',fit);fit();
+const m=location.hash.match(/p(\d+)/);show(m?+m[1]-1:0);
+</script>
+</body>
+</html>
