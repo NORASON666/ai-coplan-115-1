@@ -50,7 +50,7 @@ def render(d):
 <div class="org">臺北市科技領域輔導團 國小分團｜資訊人員分區共備</div>
 <h1>AI 工具衝擊下的<br><mark>教學因應策略</mark></h1>
 <div class="meta">2026.10.23・11.06　南港／內湖區</div>
-<div class="who"><span>臺北市數位學習中心 <b>周凡淇</b></span><span>日新國小科技中心 <b>何詩慧</b> 主任</span></div>
+<div class="who"><span>臺北市數位學習中心 <b>周凡淇</b></span><span>日新科技中心 <b>何詩慧</b> 主任</span></div>
 </div></div>'''
     if t == "closing":
         return f'''<div class="cover">{ill("cover_bg")}<div class="cover-text">
