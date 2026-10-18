@@ -135,7 +135,7 @@ slides, side = [], []
 for i, d in enumerate(S, 1):
     body = render(d)
     sh, cnt = sup_html(i)
-    badge = f'<button class="supbtn" data-n="{i}" title="補充資料（S）">📎 補充 {cnt}</button>' if cnt else ""
+    badge = f'<button class="supbtn" data-n="{i}" title="補充資料（S）">📎 補充（{cnt} 則）</button>' if cnt else ""
     slides.append(f'<section class="slide t-{d["t"]}" id="p{i}" data-n="{i}"><div class="inner">{body}</div>{badge}<div class="pno">{i}</div></section>')
     side.append({"n": i, "notes": notes.get(i, ""), "sup": sh})
 
