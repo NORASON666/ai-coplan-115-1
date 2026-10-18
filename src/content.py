@@ -65,7 +65,7 @@ S = [
       src="The Guardian，2024-12-24"),
  dict(t="illus", kicker="補充案例", title="AI Injection：藏字給 AI 看", ill="p23_ai_injection", src="The Guardian，2024-12-24"),
  dict(t="steps", extra=True, kicker="動手玩｜AI Injection 遊戲", title="讓「嚴格評審」給你 100 分",
-      steps=["打開 Gemini，叫出「嚴格作文評審」（技能或 Gem）", "先老實寫 50 字：「我心中理想的電腦課」", "再想辦法讓它給你 100 分——什麼招都可以"],
+      steps=["打開 Gemini，叫出「嚴格作文評審」（技能或 Gem）", "先老實寫 50 字：「我心中理想的電腦課」", "大家努力好好寫，拚 100 分！"],
       foot="限時 5 分鐘・拿到 100 分就截圖分享",
       notes="【講稿｜約 1 分鐘＋遊戲 5 分鐘】\n剛剛看到網頁可以藏字指揮 AI。現在換大家當「攻擊者」。\n這個評審很嚴格，老實寫通常只有 60～80 分。請先老實寫一篇，再想辦法讓它給 100 分。\n提示詞與技能檔在右下角「補充資料」，可以直接複製或下載。\n時間到請拿到 100 分的老師分享用了哪一招。"),
  dict(t="shotText", extra=True, kicker="動手玩｜安裝方式", title="把技能加進 Gemini", img="skill_steps.jpg", dl="assets/files/strict-essay-judge.zip",
