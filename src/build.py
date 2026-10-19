@@ -98,11 +98,12 @@ def render(d):
         qs = "".join(f'<li><span class="num">{"" if d.get("letters") else mark[i]}</span><span>{e(q)}</span></li>' for i, q in enumerate(d["qs"]))
         ask = f'<p class="foot">{e(d["ask"])}</p>' if d.get("ask") else ""
         return f'''<div class="kicker">{e(d["kicker"])}</div><div class="situation"><span class="tag">情境</span>{e(d["situation"])}</div>
-<ol class="steps qs">{qs}</ol>{ask}'''
+<ol class="steps qs">{qs}</ol>{ask}{foot(d)}'''
     if t == "table":
         th = "".join(f"<th>{e(x)}</th>" for x in d["head"])
         trs = "".join("<tr>" + "".join(f"<td>{e(c)}</td>" for c in r) + "</tr>" for r in d["rows"])
-        return f'{head(d)}<table class="tbl"><thead><tr>{th}</tr></thead><tbody>{trs}</tbody></table>{foot(d)}'
+        cls = "tbl compact" if d.get("compact") else "tbl"
+        return f'{head(d)}<table class="{cls}"><thead><tr>{th}</tr></thead><tbody>{trs}</tbody></table>{foot(d)}'
     if t == "stats":
         cs = "".join(f'<div class="card stat"><div class="big">{e(n)}</div><h3>{e(l)}</h3>{f"<p>{e(s)}</p>" if s else ""}</div>' for n, l, s in d["stats"])
         return f'{head(d)}<div class="cards c{len(d["stats"])}">{cs}</div>{foot(d)}'
