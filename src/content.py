@@ -65,7 +65,8 @@ S = [
  dict(t="illus", kicker="共同框架", title="共通的判斷框架", ill="p14_four_questions", hide_title=True),
  dict(t="illus", kicker="老師自己先", title="用 AI 備課：四個階段", ill="p15_four_stages", hide_title=True,
       src="周淑卿，〈生成式AI輔助備課對教師教學推理的影響〉，教育研究月刊 384 期，2026-04"),
- dict(t="shot", kicker="案例激盪", title="從 AI Day 看到什麼？", img="image19.jpg", wide=True),
+ dict(t="shot", kicker="案例激盪", title="從 AI Day 看到什麼？", img="image19.jpg", wide=True,
+      rel="接在 p14 四問、p15 備課四階段之後：AI Day 老師們在「教 AI 之前」，先替每個主題想好要學生學什麼、問什麼——就是四問的第①問。表中的偏誤、幻覺、倫理，也是去年兩場談過的素養主題。"),
 
  # ---------- 案例① ----------
  dict(t="divider", kicker="案例①", title="AI 搜尋", sub="Google 還要不要教？", ill="sec_search"),
@@ -103,7 +104,8 @@ S = [
       foot="皆為二手報導，引用前請查原文", src="商傳媒（Product.ai），2026-09"),
  dict(t="aiday", title="討論一：搜尋方式可以用 AI 取代嗎？（常見資訊課程）",
       lines=["AI 回應 vs 傳統搜尋有何不同？", "哪些情境適合用 AI 搜尋？哪些仍需傳統搜尋？", "學生若用 AI 搜尋，如何進行「驗證與交叉查證」教學"],
-      link="https://tinyurl.com/25fdhc5k"),
+      link="https://tinyurl.com/25fdhc5k",
+      rel="對應案例①（p18–p19）：AI 回應 vs 傳統搜尋。這組討論的「驗證與交叉查證」，就是 p19 的「資料來源在哪裡、是否一致、哪個有根據」，也是下一段案例②查證的起點。"),
 
  # ---------- 案例② ----------
  dict(t="divider", kicker="案例②", title="AI 查證", sub="錯誤訊息能當教材嗎？", ill="sec_verify"),
@@ -162,7 +164,8 @@ S = [
       foot="依學習目的決定禁止、限制或鼓勵。", src="忠憲老師提供（NotebookLM 生成；收錄於小花 1019 合併版）",
       notes="【夥伴提供】承接「同一個 AI 工具，不同學習目標，介入程度可以不同」：依學習目的決定禁止、限制或鼓勵。"),
  dict(t="aiday", title="AI Day 分享｜AI 生圖用在社會科（國中）・黃馨誼老師（地理）",
-      lines=["AI 生圖 → 大家來找碴", "歷史人物大考驗（AI 生圖）", "複習小幫手 AI 代理"], link="https://tinyurl.com/2dcr5ujd"),
+      lines=["AI 生圖 → 大家來找碴", "歷史人物大考驗（AI 生圖）", "複習小幫手 AI 代理"], link="https://tinyurl.com/2dcr5ujd",
+      rel="對應 p39「同一工具，不同目標」與 39-1「AI 授權層級」：三個活動都用 AI，但 AI 扮演的角色不同——AI 畫的圖當成「讓學生找錯的材料」，屬於「鼓勵」層（評估、反駁 AI 產出）；AI 生圖當題目情境、AI 代理陪複習，屬於「限制」層（AI 只提供素材或陪練）。共通點：AI 負責畫，學生負責判斷。"),
 
  # ---------- 案例⑤ ----------
  dict(t="divider", kicker="案例⑤", title="Scratch 除錯", sub="AI 是答案機還是教練？", ill="sec_scratch"),
@@ -183,7 +186,8 @@ S = [
       src="Bastani 等，2024（高中數學實驗）；Knowledge at Wharton"),
  dict(t="aiday", title="AI Day 分享｜Scratch 也能玩 GPT！・鄭之婷老師（OSEP 平台）",
       lines=["Scratch + GPT = 無限可能", "智慧翻譯螢幕（雙向對話即時翻譯）", "完整微課程資源（拿了就能教）", "重點：要教 API Key 概念（安全＋計費）"],
-      link="https://tinyurl.com/26povxmb"),
+      link="https://tinyurl.com/26povxmb",
+      rel="對應案例⑤（p42–p46）：這裡 AI 不是替學生寫程式，而是學生寫程式去「呼叫」AI，AI 成為作品的一部分。學習目標變成「理解 AI 怎麼運作」（API Key、安全、計費），屬於 39-1 的「鼓勵」層；也呼應 p46：結果好壞取決於工具怎麼設計。"),
 
  # ---------- 案例⑥ ----------
  dict(t="divider", kicker="案例⑥", title="作文／例句", sub="不是只問「用了 AI 嗎？」", ill="sec_writing"),
@@ -206,17 +210,21 @@ S = [
       ("① 課程對齊", "內容對準課綱與這堂課的目標", ""), ("② 回應引導", "會追問、給提示，不直接給答案", ""),
       ("③ 學生親和", "適齡、好上手、有防護", ""), ("④ 教師可觀察", "老師看得到學生問了什麼", "")],
       src="商業通用 AI vs 教育專用 AI 助教｜王道維〈AI真的傷害了學生的學習嗎？〉，風傳媒 2026-09-16"),
- dict(t="aiday", title="AI Day 成果網站", lines=["掃描 QR Code 看完整案例"], link="https://tinyurl.com/22ofcoy9", qr="qr_aiday.png"),
+ dict(t="aiday", title="AI Day 成果網站", lines=["掃描 QR Code 看完整案例"], link="https://tinyurl.com/22ofcoy9", qr="qr_aiday.png",
+      rel="接在 p54「選 AI 工具的四個判準」之後：看這些老師的實例時，可以用四判準檢視——課程對齊嗎？會引導還是直接給答案？適合國小學生嗎？老師看得到學生怎麼用嗎？"),
  dict(t="aiday", title="更多 AI Day 案例（一）", lines=[
       "黃朝榮（PUTI 老師）— 繪本主題生成器：輸入主題 → AI 產生分鏡文字＋生圖提示詞；班級圖書管理系統（追蹤熱門書）",
-      "JENNY LIN（華語老師）— 自動化教學系統：自動寄送收據、課時計算；多語言排課系統"]),
+      "JENNY LIN（華語老師）— 自動化教學系統：自動寄送收據、課時計算；多語言排課系統"],
+      rel="對應 p15「用 AI 備課」：這兩個例子多是老師端的工具（備課、管理、行政）。AI 幫老師省下的時間，要用回學生身上；學生端怎麼用 AI，仍要回到四問。"),
  dict(t="aiday", title="更多 AI Day 案例（二）", lines=[
       "曾俊夫 — GPTs 名人訪談：四年級訪問居禮夫人；用 NotebookLM 建立知識庫；40 分鐘製作一個機器人",
       "潘怡安 — 降低程式門檻：四年級生 28 小時做棒球訓練裝置；高中生做電子木魚",
-      "林廷宇（特教）— AI 當畫筆：特教生用 AI 生成故事版；學生選擇 ≠ 老師選擇（培養判斷力）"]),
+      "林廷宇（特教）— AI 當畫筆：特教生用 AI 生成故事版；學生選擇 ≠ 老師選擇（培養判斷力）"],
+      rel="對應案例⑥與 p51「跨領域老師來問時」：三位老師的學生都用了 AI，但學習發生在「問出好問題」「做出選擇」「自己判斷」——林廷宇老師的「學生選擇 ≠ 老師選擇」，正是四問第③問「學生還要自己做什麼」。"),
  dict(t="aiday", title="AI Day 分享｜四年級生的跨域創作・曾俊夫老師（GPTs 訪談名人）",
       lines=["四年級訪問居禮夫人、郭婞淳", "學生學會「好問題」vs「Google 問題」", "用 NotebookLM 建立知識庫（40 分鐘搞定）"],
-      link="https://tinyurl.com/265e44d9"),
+      link="https://tinyurl.com/265e44d9",
+      rel="對應案例①搜尋（p19）與 31-1「主動認知」：學生學會分辨「好問題」與「Google 問題」，就是 AI 時代搜尋能力的轉向——從下關鍵字，變成先想好要問什麼，再判斷 AI 的回答。"),
  dict(t="cards", kicker="教育部 PADS", title="可參考的 5 份教案", cols=3, cards=[
       ("13 網路柯南假訊息偵查", "五年級資訊｜查核報告書", ""), ("06 真假虛實的資訊", "六年級綜合｜AI 幻覺再更正", ""),
       ("11 我和 e 度一起寫作文", "三年級國語｜原句／AI 建議／修改", ""), ("08 小小氣象預報員", "六年級自然｜AI 查核欄位", ""),
