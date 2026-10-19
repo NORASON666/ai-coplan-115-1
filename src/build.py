@@ -34,7 +34,7 @@ def head(d):
 def foot(d):
     out = ""
     if d.get("rel"):
-        out += f'<div class="rel"><b>🔗 和本段的關係</b>{e(d["rel"])}</div>'
+        out += f'<div class="rel"><span class="tag">{e(d["rel"][0])}</span><span>{e(d["rel"][1])}</span></div>'
     if d.get("foot"):
         out += f'<p class="foot">{e(d["foot"])}</p>'
     if d.get("link"):
