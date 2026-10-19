@@ -130,6 +130,11 @@ def sup_html(n):
         pts = "".join(f"<li>{e(p)}</li>" for p in it.get("points", []))
         cl = "".join(f"<li>{e(p)}</li>" for p in it.get("classroom", []))
         cl = f'<div class="cl"><b>課堂可以這樣做</b><ol>{cl}</ol></div>' if cl else ""
+        rd = "".join(f"<p>{e(x)}</p>" for x in it.get("read", []))
+        rd = f'<details class="rd" open><summary>深入閱讀</summary>{rd}</details>' if rd else ""
+        lm = "".join(f"<li>{e(x)}</li>" for x in it.get("limits", []))
+        lm = f'<div class="lm"><b>研究限制・引用提醒</b><ul>{lm}</ul></div>' if lm else ""
+        tk = f'<div class="tk"><b>上台可以這樣說</b><p>{e(it["talk"])}</p></div>' if it.get("talk") else ""
         url = f' <a href="{html.escape(it["url"])}" target="_blank" rel="noopener">原文</a>' if it.get("url") else ""
         ev = it.get("evidence", "")
         code = ""
@@ -138,7 +143,7 @@ def sup_html(n):
         if it.get("download"):
             code += f'<p><a class="dl" href="{html.escape(it["download"])}" download>⬇ {e(it.get("download_label","下載"))}</a></p>'
         out.append(f'''<article class="sup"><div class="sup-k"><span class="kind">{e(it.get("kind",""))}</span><span class="ev ev-{html.escape(ev)}">{e(ev)}</span></div>
-<h4>{e(it["title"])}</h4><ul>{pts}</ul>{cl}{code}<p class="sup-src">{e(it.get("source",""))}{url}</p></article>''')
+<h4>{e(it["title"])}</h4><ul>{pts}</ul>{rd}{lm}{tk}{cl}{code}<p class="sup-src">{e(it.get("source",""))}{url}</p></article>''')
     return "".join(out), len(items)
 
 
