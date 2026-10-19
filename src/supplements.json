@@ -1620,5 +1620,61 @@
    "source": "本團整理（對照本簡報各頁）",
    "url": ""
   }
+ ],
+ "70-1": [
+  {
+   "title": "圖片浮水印：Google SynthID 與 C2PA 內容憑證",
+   "kind": "工具",
+   "evidence": "官方文件",
+   "points": [
+    "SynthID 是 Google DeepMind 的隱形浮水印，嵌在 Google AI 生成的圖片、影片、音訊、文字中，肉眼看不到。",
+    "2025-11-20 起可在 Gemini 上傳圖片，詢問「這是 Google AI 生成的嗎？」，Gemini 會檢查 SynthID 並說明。Google 表示已有超過 200 億件內容加上 SynthID。",
+    "限制：目前只認得 Google AI 的內容；偵測到代表全部或部分來自 Google AI，偵測不到則可能來自其他 AI。",
+    "C2PA「內容憑證」是另一種做法：在檔案裡記錄來源與編輯歷程（像數位履歷），OpenAI、Adobe、Anthropic 等都有採用；但截圖、轉存就可能把它剝掉。"
+   ],
+   "classroom": [
+    "老師用 Gemini 生一張圖，再上傳問「這是 AI 生成的嗎？」，讓學生看見 AI 圖片會留記號。",
+    "接著問：如果是用別家 AI 做的、或截圖之後再傳，還查得到嗎？引出「查不到≠不是 AI」。"
+   ],
+   "talk": "Gemini 現在可以幫你查一張圖是不是 Google AI 做的，但別家做的它查不出來。查不到，不代表是真的。",
+   "source": "Google（2025-11-20）How we're bringing AI image verification to the Gemini app；Gemini 說明中心〈Verify AI-generated images, videos, and audio〉",
+   "url": "https://blog.google/technology/ai/ai-image-verification-gemini-app/"
+  },
+  {
+   "title": "文字浮水印：原理、2026 年的進展與限制",
+   "kind": "研究",
+   "evidence": "研究",
+   "points": [
+    "原理：模型在挑選下一個字時做極小的統計偏移，人讀不出差別，但偵測器能算出來。Google 在 Nature 發表 SynthID-Text，並開源（Dathathri 等 2024）。",
+    "Anthropic：2026-08-02 起新 Claude 模型的文字輸出加入隱形浮水印（全球），生成的圖檔另加 C2PA 簽章。",
+    "OpenAI：2026-10-05 宣布 ChatGPT 與 Codex 先在歐盟為文字加隱形浮水印；API 全球可選擇開啟；台灣 ChatGPT 使用者這階段不在預設範圍。",
+    "OpenAI 自陳限制：同義詞替換 10% 字詞，偵測率約從 92% 降到 66%；翻譯或用別的模型改寫更容易洗掉；文字太短也測不出來。",
+    "OpenAI 早在 2024 年就做出文字浮水印卻未推出，原因之一是擔心對非英語母語者造成不公平影響——和 p70 偵測器誤判非母語者是同一類問題。"
+   ],
+   "limits": [
+    "偵測到浮水印，也不代表整篇都是 AI 寫的：學生可能只是請 AI 潤飾或翻譯自己的文字（Anthropic 說明）。",
+    "偵測工具多半不公開或只開放研究者申請，老師目前無法自行檢測學生作業的文字。"
+   ],
+   "talk": "文字浮水印今年才開始，而且改寫一成字詞就掉到六成多。它幫不了老師抓作業，我們還是要看學習證據。",
+   "source": "Dathathri, S., et al. (2024). Scalable watermarking for identifying large language model outputs. Nature, 634, 818–823；Anthropic〈How Claude marks AI-generated content〉；OpenAI（2026-10-05）EU text provenance；INSIDE 2026-08-11、2026-10-06 報導",
+   "url": "https://doi.org/10.1038/s41586-024-08025-4"
+  },
+  {
+   "title": "法規：歐盟 AI 法第 50 條（2026-08-02 上路）",
+   "kind": "政策指引",
+   "evidence": "官方文件",
+   "points": [
+    "AI 業者：生成的圖片、音訊、影片、文字須帶有機器可讀標記，能被偵測為 AI 生成（浮水印、後設資料都是可行方式）。",
+    "使用者端：發布深偽內容、涉及公共利益的 AI 生成文字，要對外揭露；與 AI 互動時應告知使用者。",
+    "8/2 前已上市的系統，機器可讀標記可緩衝到 2026-12-02；罰則最高 1,500 萬歐元或全球營業額 3%。",
+    "台灣：數位發展部曾表示 AI 治理指引會納入 AI 生成內容與深偽標示，目前尚未查到強制規定；教育部 115 指引要求的是學生「標註」AI 使用（見去年共備）。"
+   ],
+   "talk": "歐盟已經規定 AI 生成內容要能被機器辨識；台灣還沒有。對學生來說，現在最實際的還是自己「標註」用了 AI。",
+   "classroom": [
+    "連結去年「AI 標註」：浮水印是機器替內容蓋章，標註是學生自己誠實說明，兩者都在回答「這是誰做的」。"
+   ],
+   "source": "INSIDE 2026-08-03〈歐盟 AI 法案 8 月 2 日上路〉；歐盟執委會第 50 條問答與 AI 生成內容透明度行為準則",
+   "url": "https://www.inside.com.tw/article/41991-eu-ai-act-article-50-content-labelling-august-2026"
+  }
  ]
 }
