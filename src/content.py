@@ -161,7 +161,7 @@ S = [
       ("✅ 鼓勵", "目的：培養 AI 素養與批判能力\n情境：要求學生評估、反駁或優化 AI 的產出", "")],
       foot="依學習目的決定禁止、限制或鼓勵。", src="忠憲老師提供（NotebookLM 生成；收錄於小花 1019 合併版）",
       notes="【夥伴提供】承接「同一個 AI 工具，不同學習目標，介入程度可以不同」：依學習目的決定禁止、限制或鼓勵。"),
- dict(t="aiday", title="案例 3：GAI 用於社會科經驗談（國中）・黃馨誼老師（地理）",
+ dict(t="aiday", title="AI Day 分享｜AI 生圖用在社會科（國中）・黃馨誼老師（地理）",
       lines=["AI 生圖 → 大家來找碴", "歷史人物大考驗（AI 生圖）", "複習小幫手 AI 代理"], link="https://tinyurl.com/2dcr5ujd"),
 
  # ---------- 案例⑤ ----------
@@ -181,7 +181,7 @@ S = [
       ("家教版 AI", "練習成績 +127%\n考試成績 ≈ 不用 AI", "只給提示、不給答案"),
       ("所以", "差別不在用不用 AI，\n而在工具怎麼設計", "")],
       src="Bastani 等，2024（高中數學實驗）；Knowledge at Wharton"),
- dict(t="aiday", title="案例 1：Scratch 也能玩 GPT！・鄭之婷老師（OSEP 平台）",
+ dict(t="aiday", title="AI Day 分享｜Scratch 也能玩 GPT！・鄭之婷老師（OSEP 平台）",
       lines=["Scratch + GPT = 無限可能", "智慧翻譯螢幕（雙向對話即時翻譯）", "完整微課程資源（拿了就能教）", "重點：要教 API Key 概念（安全＋計費）"],
       link="https://tinyurl.com/26povxmb"),
 
@@ -214,7 +214,7 @@ S = [
       "曾俊夫 — GPTs 名人訪談：四年級訪問居禮夫人；用 NotebookLM 建立知識庫；40 分鐘製作一個機器人",
       "潘怡安 — 降低程式門檻：四年級生 28 小時做棒球訓練裝置；高中生做電子木魚",
       "林廷宇（特教）— AI 當畫筆：特教生用 AI 生成故事版；學生選擇 ≠ 老師選擇（培養判斷力）"]),
- dict(t="aiday", title="案例 2：四年級生的跨域創作・曾俊夫老師（GPTs 訪談名人）",
+ dict(t="aiday", title="AI Day 分享｜四年級生的跨域創作・曾俊夫老師（GPTs 訪談名人）",
       lines=["四年級訪問居禮夫人、郭婞淳", "學生學會「好問題」vs「Google 問題」", "用 NotebookLM 建立知識庫（40 分鐘搞定）"],
       link="https://tinyurl.com/265e44d9"),
  dict(t="cards", kicker="教育部 PADS", title="可參考的 5 份教案", cols=3, cards=[
