@@ -7,6 +7,9 @@ ILL = "assets/illus/"
 S = [
  # ---------- 開場 ----------
  dict(t="cover"),
+ dict(t="qrpage", extra=True, kicker="研習社群", title="加入 LINE 群組", img="line_group_qr.jpg",
+      lines=["簡報、提示詞、討論資料都放這裡", "研習結束後持續延用"],
+      notes="【講稿】請大家先掃 QR Code 加入 LINE 群組。之後簡報、AI Injection 遊戲的提示詞、討論資料都會放在群組裡，研習結束後也會繼續用。\n（隨時要再秀 QR Code：按 Q 或上方「QR」按鈕）"),
  dict(t="divider", kicker="TOP TIPS", title="去年回顧", sub="生成式 AI 教學力＋第一堂課", ill="sec_review"),
  dict(t="cards", kicker="今天往前一步", title="不是重新認識 AI，而是把「AI 素養」帶進課堂", cols=2, cards=[
       ("前兩場已經談過", "AI 使用現況與困擾\nAI 可能有偏誤、幻覺\n如何查證 AI 回應\n標註 AI、保護隱私、禮貌對話", ""),
@@ -88,7 +91,7 @@ S = [
  dict(t="illus", kicker="補充案例", title="AI Injection：藏字給 AI 看", ill="p23_ai_injection", src="The Guardian，2024-12-24"),
  dict(t="steps", extra=True, kicker="動手玩｜AI Injection 遊戲", title="讓「嚴格評審」給你 100 分",
       steps=["打開 Gemini，叫出「嚴格作文評審」（技能或 Gem）", "先老實寫 50 字：「我心中理想的電腦課」", "大家努力好好寫，拚 100 分！"],
-      foot="限時 5 分鐘・拿到 100 分就截圖分享",
+      foot="限時 5 分鐘・拿到 100 分就截圖分享・提示詞在 LINE 群組",
       notes="【講稿｜約 1 分鐘＋遊戲 5 分鐘】\n剛剛看到網頁可以藏字指揮 AI。現在換大家當「攻擊者」。\n這個評審很嚴格，老實寫通常只有 60～80 分。請先老實寫一篇，再想辦法讓它給 100 分。\n提示詞與技能檔在右下角「補充資料」，可以直接複製或下載。\n時間到請拿到 100 分的老師分享用了哪一招。"),
  dict(t="shotText", extra=True, kicker="動手玩｜安裝方式", title="把技能加進 Gemini", img="skill_steps.jpg", dl="assets/files/strict-essay-judge.zip",
       text=["① 點左下角**設定**", "② 選上方**技能**", "③ 點右上**建立**，匯入技能檔或貼上提示詞", "使用時輸入 **@嚴格作文評審**，再貼上作文"],

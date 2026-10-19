@@ -152,7 +152,44 @@ ol.bul li::marker{font-weight:900;color:var(--blue)}
 #grid button{border:2px solid var(--line);background:#fff;border-radius:10px;padding:10px;text-align:left;cursor:pointer;font:500 14px "Noto Sans TC";color:var(--ink);min-height:70px}
 #grid button b{color:var(--blue);margin-right:6px}
 #grid button.has::after{content:" 📎";}
-@media print{#bar,#panel,#prog,.supbtn{display:none}}
+
+/* LINE QR 頁 */
+.qrpage{flex:1;display:flex;align-items:center;justify-content:center;gap:90px}
+.qrpage img{height:640px;border:4px solid var(--navy);border-radius:24px;background:#fff;padding:14px;box-shadow:14px 16px 0 var(--pale)}
+.qrpage .bul{flex:none;font-size:52px}
+/* QR 彈窗 */
+#qrModal{position:fixed;inset:0;background:rgba(20,35,65,.72);z-index:40;display:none;align-items:center;justify-content:center}
+#qrModal.open{display:flex}
+#qrModal .box{background:#fff;border-radius:28px;padding:28px 34px 22px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+#qrModal img{width:min(70vh,80vw);height:min(70vh,80vw);display:block}
+#qrModal .cap{font:900 clamp(20px,3vh,34px) 'Noto Sans TC';color:var(--navy);margin-top:12px}
+#qrModal .hint{font-size:14px;color:var(--muted);margin-top:4px}
+/* 計時器面板 */
+#timerPanel{position:fixed;left:50%;top:64px;transform:translateX(-50%);z-index:35;background:#fff;border:2px solid var(--navy);border-radius:20px;box-shadow:0 10px 30px rgba(30,58,110,.25);padding:16px 18px;display:none;font-family:'Noto Sans TC';width:min(440px,94vw)}
+#timerPanel.open{display:block}
+#timerPanel h5{margin:0 0 10px;font-size:18px;color:var(--navy)}
+#timerPanel .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+#timerPanel input{width:70px;font:700 22px 'Noto Sans TC';text-align:center;border:2px solid var(--line);border-radius:10px;padding:4px}
+#timerPanel button{font:700 15px 'Noto Sans TC';border:none;background:var(--navy);color:#fff;border-radius:14px;padding:7px 12px;cursor:pointer}
+#timerPanel button.ghost{background:#fff;color:var(--navy);border:2px solid var(--navy)}
+#timerPanel button.go{background:var(--orange)}
+#timerPanel label{font-size:14px;color:var(--ink);display:flex;align-items:center;gap:4px}
+/* 浮動倒數顯示（換頁不影響） */
+#timerBadge{position:fixed;right:18px;top:12px;z-index:36;display:none;align-items:center;gap:10px;background:#fff;border:3px solid var(--navy);border-radius:22px;padding:6px 16px;font:900 34px 'Noto Sans TC';color:var(--navy);box-shadow:0 6px 18px rgba(30,58,110,.25);cursor:pointer;font-variant-numeric:tabular-nums}
+#timerBadge.show{display:flex}
+#timerBadge.paused{opacity:.6}
+#timerBadge.warn{background:#FFF1DC;border-color:var(--orange);color:#B5462E}
+#timerBadge.danger{background:#E5484D;border-color:#B42318;color:#fff;animation:pulse 1s infinite}
+#timerBadge .bar{width:80px;height:8px;background:var(--pale);border-radius:4px;overflow:hidden}
+#timerBadge .bar i{display:block;height:100%;background:var(--sky)}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+#edgeGlow{position:fixed;inset:0;pointer-events:none;z-index:34;box-shadow:inset 0 0 0 0 rgba(229,72,77,0);transition:box-shadow .3s}
+#edgeGlow.on{animation:glow 1s infinite}
+@keyframes glow{0%,100%{box-shadow:inset 0 0 30px 6px rgba(229,72,77,.35)}50%{box-shadow:inset 0 0 80px 22px rgba(229,72,77,.7)}}
+#timesUp{position:fixed;inset:0;z-index:45;display:none;align-items:center;justify-content:center;background:rgba(229,72,77,.88);font:900 min(18vw,220px) 'Noto Sans TC';color:#fff;cursor:pointer;animation:flash .6s 5}
+#timesUp.open{display:flex}
+@keyframes flash{0%,100%{opacity:1}50%{opacity:.55}}
+@media print{#qrModal,#timerPanel,#timerBadge,#edgeGlow,#timesUp{display:none!important}#bar,#panel,#prog,.supbtn{display:none}}
 </style>
 </head>
 <body>
@@ -164,7 +201,19 @@ ol.bul li::marker{font-weight:900;color:var(--blue)}
 <button data-tab="sup" class="act">📎 補充資料</button><button data-tab="notes">🗒 講稿</button>
 <button class="x" aria-label="關閉">✕</button></header><div id="pbody"></div></aside>
 <div id="grid"></div>
-<nav id="bar"><button id="bPrev">◀</button><button id="bGrid">總覽 O</button><button id="bSup">補充 S</button><button id="bNotes">講稿 N</button><button id="bFull">全螢幕 F</button><button id="bNext">▶</button></nav>
+
+<div id="qrModal"><div class="box"><img src="assets/shots/line_group_qr.jpg" alt="LINE 群組 QR Code"><div class="cap">掃描加入研習 LINE 群組</div><div class="hint">點任意處或按 Q／Esc 關閉</div></div></div>
+<div id="timerPanel" aria-label="倒數計時">
+ <h5>⏱ 倒數計時</h5>
+ <div class="row"><input id="tMin" type="number" min="0" max="180" value="5"> 分 <input id="tSec" type="number" min="0" max="59" value="0"> 秒</div>
+ <div class="row"><button class="ghost" data-p="60">1 分</button><button class="ghost" data-p="180">3 分</button><button class="ghost" data-p="300">5 分</button><button class="ghost" data-p="600">10 分</button><button class="ghost" data-p="900">15 分</button></div>
+ <div class="row"><button class="go" id="tStart">開始</button><button id="tPause">暫停／繼續</button><button class="ghost" id="tAdd">+1 分</button><button class="ghost" id="tReset">結束</button></div>
+ <div class="row"><label><input type="checkbox" id="tTick" checked> 每秒滴答聲</label><label><input type="checkbox" id="tWarnSnd" checked> 最後 10 秒提示音樂</label></div>
+</div>
+<div id="timerBadge" title="點一下打開計時設定"><span id="tLeft">05:00</span><span class="bar"><i id="tBar"></i></span></div>
+<div id="edgeGlow"></div>
+<div id="timesUp">時間到！</div>
+<nav id="bar"><button id="bPrev">◀</button><button id="bQR">QR Q</button><button id="bTimer">⏱ 計時 T</button><button id="bGrid">總覽 O</button><button id="bSup">補充 S</button><button id="bNotes">講稿 N</button><button id="bFull">全螢幕 F</button><button id="bNext">▶</button></nav>
 <script>
 const SIDE=/*SIDE*/[];
 const slides=[...document.querySelectorAll('.slide')];
@@ -195,10 +244,42 @@ addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('input,text
   else if(['ArrowLeft','PageUp','Backspace'].includes(k)){e.preventDefault();show(cur-1);}
   else if(k==='Home')show(0);else if(k==='End')show(slides.length-1);
   else if(k==='o'||k==='O')grid.classList.toggle('open');else if(k==='s'||k==='S')openPanel('sup');
-  else if(k==='n'||k==='N')openPanel('notes');else if(k==='f'||k==='F')full();
-  else if(k==='Escape'){grid.classList.remove('open');panel.classList.remove('open');}});
+  else if(k==='n'||k==='N')openPanel('notes');else if(k==='q'||k==='Q')toggleQR();else if(k==='t'||k==='T')tp.classList.toggle('open');else if(k==='f'||k==='F')full();
+  else if(k==='Escape'){grid.classList.remove('open');panel.classList.remove('open');qrModal.classList.remove('open');tp.classList.remove('open');up.classList.remove('open');}});
 let tx=null;addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
 addEventListener('touchend',e=>{if(tx===null||panel.contains(e.target))return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)show(cur+(dx<0?1:-1));tx=null;});
+
+// ===== QR 彈窗 =====
+const qrModal=document.getElementById('qrModal');
+function toggleQR(){qrModal.classList.toggle('open');}
+qrModal.onclick=()=>qrModal.classList.remove('open');
+bQR.onclick=toggleQR;
+// ===== 倒數計時（以結束時刻計算，換頁、切換分頁都不影響） =====
+const tp=document.getElementById('timerPanel'), badge=document.getElementById('timerBadge'), tLeft=document.getElementById('tLeft'), tBar=document.getElementById('tBar'), glow=document.getElementById('edgeGlow'), up=document.getElementById('timesUp');
+let tEnd=0, tTotal=0, tRemainPaused=null, tTimer=null, lastSec=-1, actx=null;
+function ac(){if(!actx)actx=new (window.AudioContext||window.webkitAudioContext)();if(actx.state==='suspended')actx.resume();return actx;}
+function beep(f,dur,vol,type='sine',when=0){const c=ac(),o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(0.0001,c.currentTime+when);g.gain.exponentialRampToValueAtTime(vol,c.currentTime+when+0.01);g.gain.exponentialRampToValueAtTime(0.0001,c.currentTime+when+dur);o.connect(g).connect(c.destination);o.start(c.currentTime+when);o.stop(c.currentTime+when+dur+0.05);}
+function tick(sec){if(!tTick.checked)return; if(sec<=10&&tWarnSnd.checked){beep(sec%2?880:1175,0.12,0.25,'triangle');}else{beep(sec%2?1000:800,0.04,0.08,'square');}}
+function warnMelody(){if(!tWarnSnd.checked)return;[659,784,880].forEach((f,i)=>beep(f,0.18,0.22,'triangle',i*0.16));}
+function finale(){[523,659,784,1047,784,1047].forEach((f,i)=>beep(f,0.28,0.3,'triangle',i*0.22));}
+const fmt=s=>{s=Math.max(0,Math.ceil(s));const m=Math.floor(s/60),x=s%60;return String(m).padStart(2,'0')+':'+String(x).padStart(2,'0');};
+function remain(){return tRemainPaused!==null?tRemainPaused:(tEnd-Date.now())/1000;}
+function paint(){const r=remain(),sec=Math.ceil(r);tLeft.textContent=fmt(r);tBar.style.width=(tTotal?Math.max(0,r/tTotal*100):0)+'%';
+  badge.classList.toggle('warn',sec<=60&&sec>10);badge.classList.toggle('danger',sec<=10&&sec>0);glow.classList.toggle('on',sec<=10&&sec>0&&tRemainPaused===null);
+  badge.classList.toggle('paused',tRemainPaused!==null);
+  if(tRemainPaused===null&&sec!==lastSec){if(lastSec>0){ if(sec===10)warnMelody(); if(sec>0)tick(sec);} lastSec=sec;}
+  if(tRemainPaused===null&&r<=0){stopTimer(false);up.classList.add('open');finale();}}
+function startTimer(total){ac();tTotal=total;tEnd=Date.now()+total*1000;tRemainPaused=null;lastSec=Math.ceil(total);badge.classList.add('show');clearInterval(tTimer);tTimer=setInterval(paint,100);paint();tp.classList.remove('open');}
+function stopTimer(hide=true){clearInterval(tTimer);tTimer=null;glow.classList.remove('on');badge.classList.remove('warn','danger');if(hide){badge.classList.remove('show');tRemainPaused=null;}else{tLeft.textContent='00:00';tBar.style.width='0%';}}
+tStart.onclick=()=>{const t=(+tMin.value||0)*60+(+tSec.value||0);if(t>0)startTimer(t);};
+tp.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const t=+b.dataset.p;tMin.value=Math.floor(t/60);tSec.value=t%60;startTimer(t);});
+tPause.onclick=()=>{if(!tTimer&&tRemainPaused===null)return;if(tRemainPaused===null){tRemainPaused=remain();}else{tEnd=Date.now()+tRemainPaused*1000;tRemainPaused=null;lastSec=Math.ceil(remain());}paint();};
+tAdd.onclick=()=>{if(tRemainPaused!==null){tRemainPaused+=60;}else if(tTimer){tEnd+=60000;}else return;tTotal+=60;lastSec=Math.ceil(remain());paint();};
+tReset.onclick=()=>{stopTimer(true);tp.classList.remove('open');};
+badge.onclick=()=>tp.classList.toggle('open');
+up.onclick=()=>{up.classList.remove('open');badge.classList.remove('show');};
+bTimer.onclick=()=>tp.classList.toggle('open');
+tp.addEventListener('keydown',e=>e.stopPropagation());
 addEventListener('resize',fit);fit();
 const m=location.hash.match(/^#p([\d-]+)$/);const k0=m?slides.findIndex(s=>s.dataset.label===m[1]):0;show(k0<0?0:k0);
 </script>
