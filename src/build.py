@@ -153,13 +153,23 @@ def sup_html(n):
 
 
 slides, side = [], []
-canva, sub = 0, 0
+canva, sub, cur = 0, 0, "0"
+# pg= 的頁是 HTML 版搬過位置的頁，保留 Canva 原頁碼；依序編號時跳過這些頁碼
+moved = {str(d["pg"]) for d in S if "pg" in d and not d.get("extra")}
 for d in S:
     # extra=True 的頁是 HTML 版新增，編號接在前一頁後面（23-1、23-2…），其餘頁碼與 Canva 一致
-    if d.get("extra"):
-        sub += 1; label = f"{canva}-{sub}"; note = d.get("notes", "")
+    if "pg" in d:
+        label = str(d["pg"])
+        if not d.get("extra"):
+            cur, sub = label, 0
+        note = d.get("notes") or ("" if d.get("extra") else notes.get(int(label), ""))
+    elif d.get("extra"):
+        sub += 1; label = f"{cur}-{sub}"; note = d.get("notes", "")
     else:
-        canva += 1; sub = 0; label = str(canva); note = notes.get(canva, "")
+        canva += 1
+        while str(canva) in moved:
+            canva += 1
+        sub = 0; cur = label = str(canva); note = d.get("notes") or notes.get(canva, "")
     body = render(d)
     sh, cnt = sup_html(label)
     badge = f'<button class="supbtn" title="補充資料（S）">📎 補充（{cnt} 則）</button>' if cnt else ""
