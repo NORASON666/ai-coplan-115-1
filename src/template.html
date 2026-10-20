@@ -143,6 +143,7 @@ ol.bul li::marker{font-weight:900;color:var(--blue)}
 .shot.two figure{margin:0;flex:1;display:flex;flex-direction:column;align-items:center;height:100%;min-height:0}.shot.two figure img{max-width:100%;flex:1;min-height:0}.shot.two figcaption{font:900 40px 'Noto Sans TC';margin-top:14px}
 /* 控制列 */
 #bar{position:fixed;left:50%;top:10px;transform:translateX(-50%);display:flex;gap:8px;z-index:10;padding:6px;background:rgba(255,255,255,.9);border:2px solid var(--navy);border-radius:24px;box-shadow:0 4px 14px rgba(30,58,110,.25)}
+#bar{transition:opacity .4s}#bar.idle{opacity:0;pointer-events:none}
 #bar button{font:700 16px "Noto Sans TC";border:none;background:var(--navy);color:#fff;border-radius:16px;padding:8px 14px;cursor:pointer}
 #bar button:hover{background:var(--orange)}
 #prog{position:fixed;left:0;top:0;height:4px;background:var(--orange);z-index:10;transition:width .2s}
@@ -215,6 +216,7 @@ ol.bul li::marker{font-weight:900;color:var(--blue)}
 <div id="timesUp">時間到！</div>
 <nav id="bar"><button id="bPrev">◀</button><button id="bQR">QR Q</button><button id="bTimer">⏱ 計時 T</button><button id="bGrid">總覽 O</button><button id="bSup">補充 S</button><button id="bNotes">講稿 N</button><button id="bFull">全螢幕 F</button><button id="bNext">▶</button></nav>
 <script>
+(()=>{const b=document.getElementById('bar');let t;const wake=()=>{b.classList.remove('idle');clearTimeout(t);t=setTimeout(()=>b.classList.add('idle'),2500)};['mousemove','mousedown','touchstart'].forEach(ev=>document.addEventListener(ev,wake));wake();})();
 const SIDE=/*SIDE*/[];
 const slides=[...document.querySelectorAll('.slide')];
 let cur=0, tab='sup';
