@@ -120,7 +120,7 @@ def render(d):
     if t == "aiday":
         lis = "".join(f"<li>{e(x)}</li>" for x in d["lines"])
         qr = f'<img class="qr" src="{SHOT}{d["qr"]}" alt="QR code">' if d.get("qr") else ""
-        return f'''<div class="kicker">案例激盪｜從 AI Day 看到什麼？</div><h2 class="title"><span>{e(d["title"])}</span></h2>
+        return f'''<div class="kicker">{e(d.get("kicker", "案例激盪｜從 AI Day 看到什麼？"))}</div><h2 class="title"><span>{e(d["title"])}</span></h2>
 <div class="aiday"><ul class="bul">{lis}</ul>{qr}</div>{foot(d)}'''
     if t == "sources":
         cols = "".join("<ul>" + "".join(f"<li>{e(x)}</li>" for x in c) + "</ul>" for c in d["cols"])
