@@ -236,7 +236,7 @@ panel.querySelector('.x').onclick=()=>panel.classList.remove('open');
 document.querySelectorAll('.supbtn').forEach(b=>b.onclick=()=>{tab='sup';panel.classList.add('open');renderPanel();});
 const grid=document.getElementById('grid');
 grid.innerHTML=slides.map((s,k)=>{const t=(s.querySelector('h1,h2,.situation')||s).textContent.trim().slice(0,40);
-  return `<button data-k="${k}" class="${SIDE[k].sup?'has':''}"><b>${slides[k].dataset.label}</b>${t}</button>`}).join('');
+  return `<button data-k="${k}" class="${SIDE[k].sup?'has':''}"><b>${slides[k].dataset.label}</b>${slides[k].dataset.canva!==slides[k].dataset.label?`<small>（Canva ${slides[k].dataset.canva}）</small>`:''}${t}</button>`}).join('');
 grid.onclick=e=>{const b=e.target.closest('button');if(b){show(+b.dataset.k);grid.classList.remove('open');}};
 function full(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
 bPrev.onclick=()=>show(cur-1);bNext.onclick=()=>show(cur+1);bGrid.onclick=()=>grid.classList.toggle('open');

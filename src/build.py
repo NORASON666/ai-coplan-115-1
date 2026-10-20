@@ -154,6 +154,7 @@ def sup_html(n):
 
 slides, side = [], []
 canva, sub, cur = 0, 0, "0"
+dmain, dsub = 0, 0
 # pg= 的頁是 HTML 版搬過位置的頁，保留 Canva 原頁碼；依序編號時跳過這些頁碼
 moved = {str(d["pg"]) for d in S if "pg" in d and not d.get("extra")}
 for d in S:
@@ -170,11 +171,16 @@ for d in S:
         while str(canva) in moved:
             canva += 1
         sub = 0; cur = label = str(canva); note = d.get("notes") or notes.get(canva, "")
+    # 畫面頁碼依 HTML 實際順序重編（搬過位置也連續）；label 仍是 Canva 頁碼，講稿與補充資料用它對應
+    if d.get("extra"):
+        dsub += 1; disp = f"{dmain}-{dsub}"
+    else:
+        dmain += 1; dsub = 0; disp = str(dmain)
     body = render(d)
     sh, cnt = sup_html(label)
     badge = f'<button class="supbtn" title="補充資料（S）">📎 補充（{cnt} 則）</button>' if cnt else ""
-    slides.append(f'<section class="slide t-{d["t"]}" id="p{label}" data-label="{label}"><div class="inner">{body}</div>{badge}<div class="pno">{label}</div></section>')
-    side.append({"n": label, "notes": note, "sup": sh})
+    slides.append(f'<section class="slide t-{d["t"]}" id="p{disp}" data-label="{disp}" data-canva="{label}"><div class="inner">{body}</div>{badge}<div class="pno" title="Canva 第 {label} 頁">{disp}</div></section>')
+    side.append({"n": disp, "canva": label, "notes": note, "sup": sh})
 
 tpl = open(os.path.join(BASE, "template.html")).read()
 out = tpl.replace("<!--SLIDES-->", "\n".join(slides)).replace("/*SIDE*/[]", json.dumps(side, ensure_ascii=False))
