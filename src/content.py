@@ -54,6 +54,11 @@ S = [
       src="以達克效應延伸的說法，整理自 NotebookLM 彙整（非原研究結論）｜忠憲老師提供（NotebookLM 生成；收錄於小花 1019 合併版）"),
  dict(t="quote", extra=True, kicker="開始之前｜AI 時代，大腦的隱形退化", title="", text="卸載記憶，\n但不卸載思考。",
       foot="工具的強大，不該成為大腦萎縮的藉口：用 AI 搭鷹架，但房子要自己蓋。", src="忠憲老師提供（NotebookLM 生成；收錄於小花 1019 合併版）"),
+ dict(t="shotText", extra=True, kicker="國內也在談", title="中教大 AI 教科書：避免思考外包", img="udn_ai_textbook.jpg",
+      text=["郭伯臣校長引 OECD《2026 數位教育展望》：通用 AI 會造成**認知卸載**——作業品質提升，學生卻沒有真的理解。",
+            "要減少思考外包，**先看得見學生怎麼用 AI**：系統分析學習歷程與 AI 對話，估計學生外包思考的程度。"],
+      link="https://udn.com/news/story/6928/9823643", src="聯合新聞網（中央社），2026-10-19",
+      notes="國內大學也開始處理同一個問題。中教大 10/19 發表 AI 教科書，和台南、南投合作。重點不是產品，是那句「先看得見學生如何使用 AI」——這也是今天共備、以及下一場評量要談的方向。"),
  dict(t="flow", kicker="今天的流程", title="共備流程", steps=[
       ("暖身", "100 秒說一說・去年回顧\n假告示・虛胖是什麼？"),
       ("共同框架", "四問：學什麼？AI 幫什麼？\n學生做什麼？如何知道學會了？"),
@@ -367,7 +372,7 @@ S = [
        "偵測誤判｜Boston Globe／NYT 2025-05-18", "隱形字考題｜世界日報 2026-07-29", "教案｜教育部 PADS"]]),
  dict(t="sources", title="補充資料來源（二）", cols=[
       ["備課四階段｜周淑卿，教育研究月刊 384 期 2026-04", "Wharton 實驗｜Bastani 等 2024", "挪威限制｜中華顧問工程司 CECI 專文",
-       "選工具四判準｜王道維，風傳媒 2026-09-16", "認知卸載｜Risko & Gilbert 2016，Trends Cogn Sci", "查完以為懂｜Fisher 等 2015，JEP: General"],
+       "選工具四判準｜王道維，風傳媒 2026-09-16", "認知卸載｜Risko & Gilbert 2016，Trends Cogn Sci", "查完以為懂｜Fisher 等 2015，JEP: General", "中教大 AI 教科書｜聯合新聞網（中央社）2026-10-19"],
       ["健康支架｜Preprints 202605.0881（預印本）", "Two-Lane／三判準｜清華大學評量指引 2026-09-01", "先人腦後 AI 範例｜NotebookLM 草擬（AI 生成）",
        "備課資料庫｜忠憲老師 NotebookLM「AI時代的教育轉型」", "寫完說不出來｜MIT Kosmyna 等 2025（arXiv 2506.08872）", "越信 AI 越少想｜Lee 等 2025，CHI '25"]]),
  dict(t="closing"),
