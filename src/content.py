@@ -17,6 +17,9 @@ PARK = [
 S = [
  # ---------- 開場 ----------
  dict(t="cover"),
+ dict(t="qrpage", extra=True, kicker="報到", title="請先掃碼報到", img="checkin_qr_1106.png", alt="場次一報到 QR Code",
+      lines=["場次一（11/06）報到用", "掃完再加入 LINE 群組（下一頁）"],
+      notes="【講稿】進場先掃 QR Code 報到，掃完翻下一頁加 LINE 群組。\n（第一場因颱風從 10/23 改到 11/06）"),
  dict(t="qrpage", extra=True, kicker="研習社群", title="加入 LINE 群組", img="line_group_qr.jpg",
       lines=["簡報、提示詞、討論資料都放這裡", "研習結束後持續延用"],
       notes="【講稿】請大家先掃 QR Code 加入 LINE 群組。之後簡報、AI Injection 遊戲的提示詞、討論資料都會放在群組裡，研習結束後也會繼續用。\n（隨時要再秀 QR Code：按 Q 或上方「QR」按鈕）"),
@@ -300,7 +303,7 @@ S = [
  dict(t="quote", kicker="共備產出｜結語", title="", text="不是決定「AI 能不能用」，\n而是一起思考：\nAI 進來之後，\n學生的學習會發生什麼改變？"),
 
  # ---------- 場次二：作業與評量 ----------
- dict(t="divider", kicker="場次二・11/06", title="作業與評量", sub="讓作業「看得見學習」", ill="sec_assess"),
+ dict(t="divider", kicker="場次二・11/13", title="作業與評量", sub="讓作業「看得見學習」", ill="sec_assess"),
  dict(t="cards", extra=True, kicker="場次二｜先看一則新聞", title="Google：學校不開 AI，就不給搜尋", cols=3, cards=[
       ("預設關閉", "Gemini 等 AI 功能，對 K-12 學生帳號預設關閉", "學校可自行開啟"),
       ("全有或全無", "學校完全不開 AI → 學生也不能用 Google 搜尋", "Google：搜尋與 AI 已深度整合"),

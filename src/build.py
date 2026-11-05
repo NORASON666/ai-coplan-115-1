@@ -53,7 +53,7 @@ def render(d):
 <div class="cover-text">
 <div class="org">臺北市科技領域輔導團 國小分團｜資訊人員分區共備</div>
 <h1>AI 工具衝擊下的<br><mark>教學因應策略</mark></h1>
-<div class="meta">2026.10.23・11.06　南港／內湖區</div>
+<div class="meta">2026.11.06・11.13　南港／內湖區</div>
 <div class="who"><span>臺北市數位學習中心 <b>周凡淇</b></span><span>日新科技中心 <b>何詩慧</b> 主任</span></div>
 </div></div>'''
     if t == "closing":
@@ -67,6 +67,10 @@ def render(d):
     if t == "bullets":
         tag = "ol" if d.get("numbered") else "ul"
         lis = "".join(f'<li class="{"hl" if i in d.get("hl", []) else ""}">{e(x)}</li>' for i, x in enumerate(d["items"]))
+        if d.get("roster"):
+            # 研習員名冊（依報名序；輪流發言時對照學校）
+            ros = "".join(f'<li><span>{e(sc)}</span>{e(n)}</li>' for sc, n in d["roster"])
+            return f'{head(d)}<div class="icebreak"><{tag} class="bul">{lis}</{tag}><ol class="roster">{ros}</ol></div>{foot(d)}'
         return f'{head(d)}<{tag} class="bul">{lis}</{tag}>{foot(d)}'
     if t == "shot":
         cls = "shot wide" if d.get("wide") else "shot"
@@ -76,7 +80,7 @@ def render(d):
         return f'{head(d)}<div class="shot two">{imgs}</div>{foot(d)}'
     if t == "qrpage":
         lis = "".join(f"<li>{e(x)}</li>" for x in d["lines"])
-        return f'{head(d)}<div class="qrpage"><img src="{SHOT}{d["img"]}" alt="LINE 群組 QR Code"><ul class="bul">{lis}</ul></div>{foot(d)}'
+        return f'{head(d)}<div class="qrpage"><img src="{SHOT}{d["img"]}" alt="{e(d.get("alt", "LINE 群組 QR Code"))}"><ul class="bul">{lis}</ul></div>{foot(d)}'
     if t == "article":
         # AI 回答樣式的短文；[[n|句子]] 是埋的問題句，reveal=True 時標號highlight
         def mk(x):

@@ -58,6 +58,11 @@ mark{background:linear-gradient(transparent 55%,var(--pale) 55%);color:inherit}
 .bul li::marker{color:var(--orange)}
 .bul li.hl{font-weight:700;color:var(--navy)}
 ol.bul li::marker{font-weight:900;color:var(--blue)}
+.icebreak{flex:1;display:flex;gap:56px;align-items:center}
+.icebreak .bul{flex:1.15;font-size:40px;line-height:1.45}
+.roster{flex:1;margin:0;padding:24px 30px 24px 3.2em;columns:2;column-gap:40px;font:700 34px/1.62 "Noto Sans TC";color:var(--navy);background:#fff;border:3px solid var(--navy);border-radius:18px}
+.roster li{break-inside:avoid}.roster li::marker{color:var(--orange);font-weight:900}
+.roster span{display:inline-block;min-width:2.6em;margin-right:.4em;font-weight:400;color:#555}
 /* 卡片：手繪框 */
 .cards{display:grid;gap:34px;flex:1;align-content:center}
 .c2{grid-template-columns:repeat(2,1fr)}.c3{grid-template-columns:repeat(3,1fr)}.c4{grid-template-columns:repeat(4,1fr)}.c1{grid-template-columns:1fr}
