@@ -77,6 +77,14 @@ def render(d):
     if t == "qrpage":
         lis = "".join(f"<li>{e(x)}</li>" for x in d["lines"])
         return f'{head(d)}<div class="qrpage"><img src="{SHOT}{d["img"]}" alt="LINE 群組 QR Code"><ul class="bul">{lis}</ul></div>{foot(d)}'
+    if t == "article":
+        # AI 回答樣式的短文；[[n|句子]] 是埋的問題句，reveal=True 時標號highlight
+        def mk(x):
+            x = e(x)
+            return re.sub(r"\[\[(\d+)\|(.+?)\]\]", (r'<mark class="err"><sup>\1</sup>\2</mark>' if d.get("reveal") else r"\2"), x)
+        ps = "".join(f"<p>{mk(x)}</p>" for x in d["paras"])
+        return f'''{head(d)}<div class="art"><div class="ask"><span class="tag">提問</span>{e(d["prompt"])}</div>
+<div class="ans"><div class="who">✦ AI 回答</div>{ps}</div></div>{foot(d)}'''
     if t == "compare":
         figs = "".join(f'<figure><img src="{SHOT}{i}" alt=""><figcaption>{e(c)}</figcaption></figure>' for i, c in d["imgs"])
         return f'{head(d)}<div class="shot two">{figs}</div>{foot(d)}'
@@ -177,6 +185,9 @@ for d in S:
     else:
         dmain += 1; dsub = 0; disp = str(dmain)
     body = render(d)
+    # 提到四問框架／備課四階段的字，點了直接叫出彈窗（不用翻回 p11、p12）
+    for w, i in (('四問框架', 0), ('備課四階段', 1)):
+        body = body.replace(w, f'<a class="fwlink" data-fw="{i}">{w} 📐</a>')
     sh, cnt = sup_html(label)
     badge = f'<button class="supbtn" title="補充資料（S）">📎 補充（{cnt} 則）</button>' if cnt else ""
     slides.append(f'<section class="slide t-{d["t"]}" id="p{disp}" data-label="{disp}" data-canva="{label}"><div class="inner">{body}</div>{badge}<div class="pno" title="Canva 第 {label} 頁">{disp}</div></section>')
