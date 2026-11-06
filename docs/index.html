@@ -229,10 +229,20 @@ ol.bul li::marker{font-weight:900;color:var(--blue)}
 #boardCols .col{background:#fff;border:3px solid var(--navy);border-radius:16px;display:flex;flex-direction:column;min-height:0}
 #boardCols .col h4{margin:0;padding:8px;text-align:center;background:var(--navy);color:#fff;font:900 clamp(18px,3vh,34px) 'Noto Sans TC';border-radius:12px 12px 0 0}
 #boardCols .list{flex:1;overflow:auto;padding:10px 12px}
-#boardCols .item{font:700 clamp(15px,2.3vh,28px)/1.45 'Noto Sans TC';color:#222;padding:8px 0;border-bottom:1px dashed #c7d3e3;white-space:pre-wrap;word-break:break-word}
+#boardCols .item{font:700 calc(clamp(15px,2.3vh,28px)*var(--bfs,1))/1.45 'Noto Sans TC';cursor:zoom-in;color:#222;padding:8px 0;border-bottom:1px dashed #c7d3e3;white-space:pre-wrap;word-break:break-word}
 #boardCols .item.new{animation:bnew 2.5s}
 @keyframes bnew{0%{background:#ffe7b3}100%{background:transparent}}
 #boardStat{font-size:13px;color:var(--muted)}
+#boardTabs{flex-wrap:wrap;gap:6px!important}#boardTabs button{padding:4px 10px!important;font-size:clamp(14px,2.1vh,22px)!important}#boardTabs button em{font-style:normal;font-weight:700;font-size:.72em;margin-left:4px;max-width:6em;display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom}
+#boardTitle{font:900 clamp(20px,3.2vh,38px) 'Noto Sans TC';color:var(--navy);margin:0 0 10px;min-height:1em}#boardTitle:empty{display:none}
+#boardCols .col h4{cursor:pointer}#boardCols.focus{grid-template-columns:1fr}#boardCols.focus .col{display:none}#boardCols.focus .col.f{display:flex}#boardCols.focus .col.f .list{columns:2;column-gap:40px}#boardCols.focus .col.f .item{break-inside:avoid;font-size:calc(clamp(20px,3.4vh,40px)*var(--bfs,1))}
+#boardSpot{position:fixed;inset:0;background:rgba(20,35,65,.8);z-index:47;display:none;align-items:center;justify-content:center}#boardSpot.open{display:flex}
+#boardSpot .box{background:#fff;border-radius:28px;width:min(1500px,90vw);max-height:88vh;display:flex;flex-direction:column;padding:28px 40px 18px}
+#boardSpot .who{font:900 clamp(20px,3.4vh,40px) 'Noto Sans TC';color:var(--orange);margin-bottom:10px}
+#boardSpot .txt{flex:1;overflow:auto;font:700 calc(clamp(28px,5.5vh,64px)*var(--bfs,1))/1.5 'Noto Sans TC';color:#1a2a44;white-space:pre-wrap;word-break:break-word}
+#boardSpot .nav{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:12px;font-size:15px;color:var(--muted)}
+#boardSpot .nav button,#boardModal .tool button{font:700 16px 'Noto Sans TC';padding:6px 14px;border-radius:10px;border:2px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer}
+#boardModal .tool{display:flex;gap:6px;align-items:center}
 #boardQR{cursor:zoom-in}#boardModal .url b{color:var(--navy);font-size:clamp(16px,2.4vh,26px)}
 #boardBig{position:fixed;inset:0;background:rgba(20,35,65,.72);z-index:46;display:none;align-items:center;justify-content:center;cursor:zoom-out}#boardBig.open{display:flex}#boardBig .box{background:#fff;border-radius:28px;padding:28px 34px 22px;text-align:center}#boardBig img{width:min(70vh,80vw);height:min(70vh,80vw);display:block;margin:0 auto}#boardBig .cap{font:900 clamp(24px,4.5vh,52px) 'Noto Sans TC';color:var(--navy);margin-top:12px}#boardBig .hint{font-size:14px;color:var(--muted)}
 #boardTabs{display:flex;gap:8px;margin-bottom:10px}#boardTabs button{font:900 clamp(16px,2.4vh,26px) 'Noto Sans TC';padding:6px 18px;border-radius:12px;border:2px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer}#boardTabs button.act{background:var(--orange);border-color:var(--orange);color:#fff}#boardTabs small{font-weight:400;margin-left:4px}
@@ -411,7 +421,7 @@ ol.bul li::marker{font-weight:900;color:var(--blue)}
 <div class="hint">← → 或 1／2 切換・按 K／Esc 或點外面關閉</div></div></div>
 <button id="fwBtn" title="隨時叫出四問框架與備課四階段（K）">📐 四問 K</button>
 <div id="qrModal"><div class="box"><img src="assets/shots/line_group_qr.jpg" alt="LINE 群組 QR Code"><div class="cap">掃描加入研習 LINE 群組</div><div class="hint">點任意處或按 Q／Esc 關閉</div></div></div>
-<div id="boardModal"><div class="top"><h3>💬 小組討論板</h3><div class="url">手機掃碼回報<br><b class="bshort"></b></div><img id="boardQR" src="assets/shots/board_qr.png" alt="小組回報 QR Code" title="點一下放大"><span id="boardStat">連線中…</span><button id="boardDl" title="下載全部主題的回報">⬇ 下載紀錄</button><button id="boardClose">✕ 關閉 B</button></div><div id="boardTabs"></div><div id="boardCols"></div><div id="boardBig"><div class="box"><img src="assets/shots/board_qr.png" alt="小組回報 QR Code"><div class="cap bshort"></div><div class="hint">點任意處關閉</div></div></div></div>
+<div id="boardModal"><div class="top"><h3>💬 小組討論板</h3><div class="url">手機掃碼回報<br><b class="bshort"></b></div><img id="boardQR" src="assets/shots/board_qr.png" alt="小組回報 QR Code" title="點一下放大"><span id="boardStat">連線中…</span><span class="tool"><button id="bfsDn" title="字體縮小（-）">A−</button><button id="bfsUp" title="字體放大（+）">A＋</button><button id="bName" title="幫目前主題取名字（只顯示在這台電腦）">✏ 主題名稱</button></span><button id="boardDl" title="下載全部主題的回報">⬇ 下載紀錄</button><button id="boardClose">✕ 關閉 B</button></div><div id="boardTabs"></div><div id="boardTitle"></div><div id="boardCols"></div><div id="boardSpot"><div class="box"><div class="who"></div><div class="txt"></div><div class="nav"><button data-d="-1">◀ 上一則</button><span class="pos"></span><button data-d="1">下一則 ▶</button><button data-d="0">✕ 關閉</button></div></div></div><div id="boardBig"><div class="box"><img src="assets/shots/board_qr.png" alt="小組回報 QR Code"><div class="cap bshort"></div><div class="hint">點任意處關閉</div></div></div></div>
 <div id="timerPanel" aria-label="倒數計時">
  <h5>⏱ 倒數計時</h5>
  <div class="row"><input id="tMin" type="number" min="0" max="180" value="5"> 分 <input id="tSec" type="number" min="0" max="59" value="0"> 秒</div>
@@ -462,32 +472,57 @@ let tx=null;addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:tr
 addEventListener('touchend',e=>{if(tx===null||panel.contains(e.target))return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)show(cur+(dx<0?1:-1));tx=null;});
 
 // ===== 小組討論板（B）：老師手機在 board/ 投稿 → ntfy.sh 中繼 → 這裡即時顯示 =====
-(()=>{const TOPIC='coplan1106-a4deb5500e',KEY='board1106v2';
-const bm=document.getElementById('boardModal'),cols=document.getElementById('boardCols'),tabs=document.getElementById('boardTabs'),st=document.getElementById('boardStat');
-cols.innerHTML=[1,2,3,4,5].map(i=>`<div class="col"><h4>第 ${i} 組</h4><div class="list" id="bl${i}"></div></div>`).join('');
+(()=>{const TOPIC='coplan1106-a4deb5500e',KEY='board1106v2',NQ=10;
+const $=id=>document.getElementById(id);
+const bm=$('boardModal'),cols=$('boardCols'),tabs=$('boardTabs'),st=$('boardStat'),spot=$('boardSpot'),big=$('boardBig'),ttl=$('boardTitle');
+cols.innerHTML=[1,2,3,4,5].map(i=>`<div class="col" data-g="${i}"><h4 title="點一下只看這組">第 ${i} 組</h4><div class="list" id="bl${i}"></div></div>`).join('');
+const ls=(k,d)=>{try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},ss=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 // 每筆回報都存在這台電腦（ntfy 只留 12 小時）
-let items=[];try{items=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){}
-const seen=new Set(items.map(x=>x.id));let curQ=1;
-function save(){try{localStorage.setItem(KEY,JSON.stringify(items))}catch(e){}}
-function drawTabs(){tabs.innerHTML=[1,2,3,4,5].map(i=>{const n=items.filter(x=>x.q===i).length;return `<button data-q="${i}" class="${i===curQ?'act':''}">主題 ${i}<small>（${n}）</small></button>`}).join('');}
-tabs.onclick=e=>{const b=e.target.closest('button');if(b){curQ=+b.dataset.q;redraw();}};
-function put(x,fresh){const el=document.createElement('div');el.className='item'+(fresh?' new':'');el.textContent=x.t;const l=document.getElementById('bl'+x.g);l.appendChild(el);l.scrollTop=l.scrollHeight;}
-function redraw(){for(let i=1;i<=5;i++)document.getElementById('bl'+i).innerHTML='';items.filter(x=>x.q===curQ).forEach(x=>put(x,false));drawTabs();}
+let items=ls(KEY,[]),names=ls(KEY+'names',{}),fs=ls(KEY+'fs',1),curQ=1,spotList=[],spotI=0;
+const seen=new Set(items.map(x=>x.id));
+function setFs(v){fs=Math.max(.6,Math.min(2.6,Math.round(v*10)/10));bm.style.setProperty('--bfs',fs);spot.style.setProperty('--bfs',fs);ss(KEY+'fs',fs);}setFs(fs);
+const qName=q=>names[q]?`主題 ${q}：${names[q]}`:`主題 ${q}`;
+function drawTabs(){tabs.innerHTML=Array.from({length:NQ},(_,k)=>k+1).map(i=>{const n=items.filter(x=>x.q===i).length;return `<button data-q="${i}" class="${i===curQ?'act':''}" title="${qName(i)}">主題 ${i}<small>（${n}）</small>${names[i]?`<em>${names[i].replace(/[<&]/g,'')}</em>`:''}</button>`}).join('');ttl.textContent=names[curQ]?qName(curQ):'';}
+tabs.onclick=e=>{const b=e.target.closest('button');if(b)setQ(+b.dataset.q);};
+function setQ(q){curQ=q;redraw();}
+function put(x,fresh){const el=document.createElement('div');el.className='item'+(fresh?' new':'');el.textContent=x.t;el.dataset.id=x.id;const l=$('bl'+x.g);l.appendChild(el);l.scrollTop=l.scrollHeight;}
+function redraw(){for(let i=1;i<=5;i++)$('bl'+i).innerHTML='';items.filter(x=>x.q===curQ).forEach(x=>put(x,false));drawTabs();}
 function add(ev,fresh){if(seen.has(ev.id))return;seen.add(ev.id);let d;try{d=JSON.parse(ev.message)}catch(e){return}
-  const x={id:ev.id,time:ev.time,q:+d.q||1,g:+d.g,t:String(d.t||'')};if(!(x.g>=1&&x.g<=5&&x.q>=1&&x.q<=5)||!x.t)return;
-  items.push(x);items.sort((a,b)=>a.time-b.time);save();if(x.q===curQ)put(x,fresh);drawTabs();}
+  const x={id:ev.id,time:ev.time,q:+d.q||1,g:+d.g,t:String(d.t||'')};if(!(x.g>=1&&x.g<=5&&x.q>=1&&x.q<=NQ)||!x.t)return;
+  items.push(x);items.sort((a,b)=>a.time-b.time);ss(KEY,items);if(x.q===curQ)put(x,fresh);drawTabs();}
 let ready=false;const es=new EventSource('https://ntfy.sh/'+TOPIC+'/sse?since=all');
 es.onopen=()=>{st.textContent='🟢 已連線';setTimeout(()=>ready=true,1500)};
 es.onmessage=e=>{try{const ev=JSON.parse(e.data);if(ev.event==='message')add(ev,ready)}catch(x){}};
 es.onerror=()=>{st.textContent='🟡 重新連線中…'};
 redraw();
+// 點一則 → 放大；◀ ▶ 在同主題內依組別切換
+function openSpot(id){spotList=items.filter(x=>x.q===curQ).sort((a,b)=>a.g-b.g||a.time-b.time);spotI=Math.max(0,spotList.findIndex(x=>x.id===id));drawSpot();spot.classList.add('open');}
+function drawSpot(){const x=spotList[spotI];if(!x)return;spot.querySelector('.who').textContent=qName(x.q)+'｜第 '+x.g+' 組';spot.querySelector('.txt').textContent=x.t;spot.querySelector('.pos').textContent=(spotI+1)+' / '+spotList.length;}
+function step(d){if(!spotList.length)return;spotI=(spotI+d+spotList.length)%spotList.length;drawSpot();}
+cols.onclick=e=>{const it=e.target.closest('.item');if(it){openSpot(it.dataset.id);return;}
+  const h=e.target.closest('h4');if(h){const c=h.parentNode,on=!(cols.classList.contains('focus')&&c.classList.contains('f'));cols.querySelectorAll('.col').forEach(x=>x.classList.remove('f'));cols.classList.toggle('focus',on);if(on)c.classList.add('f');}};
+spot.onclick=e=>{const b=e.target.closest('button');if(b){+b.dataset.d?step(+b.dataset.d):spot.classList.remove('open');}else if(e.target===spot)spot.classList.remove('open');};
 // 縮址（有縮址就改這裡；沒有就顯示完整網址）
 const SHORT='is.gd/coplan1106';document.querySelectorAll('.bshort').forEach(x=>x.textContent=SHORT);
-const big=document.getElementById('boardBig');document.getElementById('boardQR').onclick=()=>big.classList.add('open');big.onclick=()=>big.classList.remove('open');
+$('boardQR').onclick=()=>big.classList.add('open');big.onclick=()=>big.classList.remove('open');
+$('bfsUp').onclick=()=>setFs(fs+.2);$('bfsDn').onclick=()=>setFs(fs-.2);
+$('bName').onclick=()=>{const v=prompt('主題 '+curQ+' 的名稱（留空＝清除）',names[curQ]||'');if(v===null)return;if(v.trim())names[curQ]=v.trim();else delete names[curQ];ss(KEY+'names',names);drawTabs();};
 window.toggleBoard=()=>bm.classList.toggle('open');
-document.getElementById('bBoard').onclick=toggleBoard;document.getElementById('boardClose').onclick=()=>bm.classList.remove('open');
-document.getElementById('boardDl').onclick=()=>{let s='# 115-1 港湖區分區共備 小組討論紀錄（'+new Date().toLocaleString('zh-TW')+' 匯出）\n';
-  for(let q=1;q<=5;q++){const a=items.filter(x=>x.q===q);if(!a.length)continue;s+='\n## 主題 '+q+'\n';
+$('bBoard').onclick=toggleBoard;$('boardClose').onclick=()=>bm.classList.remove('open');
+// 討論板開著時，鍵盤只操作討論板（不翻投影片）
+addEventListener('keydown',e=>{if(!bm.classList.contains('open')||(e.target.closest&&e.target.closest('input,textarea')))return;
+  const k=e.key;let done=true;
+  if(k==='Escape'){if(spot.classList.contains('open'))spot.classList.remove('open');else if(big.classList.contains('open'))big.classList.remove('open');else if(cols.classList.contains('focus'))cols.classList.remove('focus');else bm.classList.remove('open');}
+  else if(spot.classList.contains('open')&&['ArrowRight','ArrowDown',' ','PageDown'].includes(k))step(1);
+  else if(spot.classList.contains('open')&&['ArrowLeft','ArrowUp','PageUp'].includes(k))step(-1);
+  else if(k==='ArrowRight')setQ(curQ%NQ+1);else if(k==='ArrowLeft')setQ((curQ+NQ-2)%NQ+1);
+  else if(k==='+'||k==='=')setFs(fs+.2);else if(k==='-'||k==='_')setFs(fs-.2);
+  else if(/^[0-9]$/.test(k))setQ(k==='0'?10:+k);
+  else if(k==='b'||k==='B')bm.classList.remove('open');
+  else if(k==='f'||k==='F')done=false;else if(k==='t'||k==='T')done=false;
+  if(done){e.preventDefault();e.stopImmediatePropagation();}},true);
+$('boardDl').onclick=()=>{let s='# 115-1 港湖區分區共備 小組討論紀錄（'+new Date().toLocaleString('zh-TW')+' 匯出）\n';
+  for(let q=1;q<=NQ;q++){const a=items.filter(x=>x.q===q);if(!a.length)continue;s+='\n## '+qName(q)+'\n';
     for(let g=1;g<=5;g++){const b=a.filter(x=>x.g===g);if(!b.length)continue;s+='\n### 第 '+g+' 組\n';b.forEach(x=>s+='- '+new Date(x.time*1000).toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'})+'　'+x.t.replace(/\n/g,' ')+'\n');}}
   const u=URL.createObjectURL(new Blob([s],{type:'text/markdown'}));const l=document.createElement('a');l.href=u;l.download='小組討論紀錄_1106.md';l.click();};
 })();

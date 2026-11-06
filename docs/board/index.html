@@ -28,7 +28,7 @@ const TOPIC='coplan1106-a4deb5500e';let grp=0,qn=0;
 const q=document.getElementById('q'),g=document.getElementById('g'),t=document.getElementById('t'),b=document.getElementById('send'),m=document.getElementById('msg');
 try{grp=+localStorage.getItem('grp')||0}catch(e){}
 for(let i=1;i<=5;i++){const x=document.createElement('button');x.textContent='第'+i+'組';x.onclick=()=>{grp=i;try{localStorage.setItem('grp',i)}catch(e){}draw()};g.appendChild(x)}
-for(let i=1;i<=5;i++){const x=document.createElement('button');x.textContent='主題'+i;x.style.fontSize='17px';x.onclick=()=>{qn=i;draw()};q.appendChild(x)}
+for(let i=1;i<=10;i++){const x=document.createElement('button');x.textContent='主題'+i;x.style.fontSize='17px';x.onclick=()=>{qn=i;draw()};q.appendChild(x)}
 function draw(){[...g.children].forEach((x,i)=>x.classList.toggle('on',i+1===grp));[...q.children].forEach((x,i)=>x.classList.toggle('on',i+1===qn))}draw();
 b.onclick=async()=>{const s=t.value.trim();if(!qn){m.className='err';m.textContent='請先選主題';return}if(!grp){m.className='err';m.textContent='請先選組別';return}if(!s){m.className='err';m.textContent='請先輸入內容';return}
 b.disabled=true;m.className='';m.textContent='送出中…';
