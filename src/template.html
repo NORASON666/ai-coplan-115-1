@@ -233,6 +233,11 @@ ol.bul li::marker{font-weight:900;color:var(--blue)}
 #boardCols .item.new{animation:bnew 2.5s}#boardCols .edits{font-size:13px;color:var(--muted);text-align:right;margin-top:4px}
 @keyframes bnew{0%{background:#ffe7b3}100%{background:transparent}}
 #boardStat{font-size:13px;color:var(--muted)}
+.rosterEdit{position:absolute;right:60px;bottom:40px;font:700 16px 'Noto Sans TC';padding:6px 14px;border-radius:10px;border:2px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;opacity:.35}.rosterEdit:hover{opacity:1}
+#rosterModal{position:fixed;inset:0;background:rgba(20,35,65,.72);z-index:48;display:none;align-items:center;justify-content:center}#rosterModal.open{display:flex}
+#rosterModal .box{background:#fff;border-radius:22px;padding:22px 26px;width:min(560px,92vw)}#rosterModal h5{margin:0 0 6px;font:900 22px 'Noto Sans TC';color:var(--navy)}#rosterModal p{margin:0 0 8px;font-size:14px;color:var(--muted)}
+#rosterModal textarea{width:100%;height:min(55vh,460px);font:20px/1.6 'Noto Sans TC';padding:10px;border:2px solid #b8c8de;border-radius:12px}
+#rosterModal .row{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}#rosterModal button{font:700 16px 'Noto Sans TC';padding:8px 16px;border-radius:10px;border:2px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer}#rosterModal button.go{background:var(--navy);color:#fff}
 #boardTabs{flex-wrap:wrap;gap:6px!important}#boardTabs button{padding:4px 10px!important;font-size:clamp(14px,2.1vh,22px)!important}#boardTabs button em{font-style:normal;font-weight:700;font-size:.72em;margin-left:4px;max-width:6em;display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom}
 #boardTitle{font:900 clamp(20px,3.2vh,38px) 'Noto Sans TC';color:var(--navy);margin:0 0 10px;min-height:1em}#boardTitle:empty{display:none}
 #boardCols .col h4{cursor:pointer}#boardCols.focus{grid-template-columns:1fr}#boardCols.focus .col{display:none}#boardCols.focus .col.f{display:flex}#boardCols.focus .col.f .list{columns:2;column-gap:40px}#boardCols.focus .col.f .item{break-inside:avoid;font-size:calc(clamp(20px,3.4vh,40px)*var(--bfs,1))}
@@ -265,6 +270,7 @@ ol.bul li::marker{font-weight:900;color:var(--blue)}
 <button id="fwBtn" title="隨時叫出四問框架與備課四階段（K）">📐 四問 K</button>
 <div id="qrModal"><div class="box"><img src="assets/shots/line_group_qr.jpg" alt="LINE 群組 QR Code"><div class="cap">掃描加入研習 LINE 群組</div><div class="hint">點任意處或按 Q／Esc 關閉</div></div></div>
 <div id="boardModal"><div class="top"><h3>💬 小組討論板</h3><div class="url">手機掃碼回報<br><b class="bshort"></b></div><img id="boardQR" src="assets/shots/board_qr.png" alt="小組回報 QR Code" title="點一下放大"><span id="boardStat">連線中…</span><span class="tool"><button id="bfsDn" title="字體縮小（-）">A−</button><button id="bfsUp" title="字體放大（+）">A＋</button><button id="bName" title="幫目前主題取名字（只顯示在這台電腦）">✏ 主題名稱</button></span><button id="boardDl" title="下載全部主題的回報">⬇ 下載紀錄</button><button id="boardClose">✕ 關閉 B</button></div><div id="boardTabs"></div><div id="boardTitle"></div><div id="boardCols"></div><div id="boardSpot"><div class="box"><div class="who"></div><div class="txt"></div><div class="nav"><button data-d="-1">◀ 上一則</button><span class="pos"></span><button data-d="1">下一則 ▶</button><button data-d="0">✕ 關閉</button></div></div></div><div id="boardBig"><div class="box"><img src="assets/shots/board_qr.png" alt="小組回報 QR Code"><div class="cap bshort"></div><div class="hint">點任意處關閉</div></div></div></div>
+<div id="rosterModal"><div class="box"><h5>✏ 編輯研習員名單</h5><p>一行一位：「學校 姓名」（中間空一格）。儲存後只存在這台電腦。</p><textarea id="rosterTxt"></textarea><div class="row"><button id="rosterReset">還原原始名單</button><button id="rosterCancel">取消</button><button class="go" id="rosterSave">💾 儲存</button></div></div></div>
 <div id="timerPanel" aria-label="倒數計時">
  <h5>⏱ 倒數計時</h5>
  <div class="row"><input id="tMin" type="number" min="0" max="180" value="5"> 分 <input id="tSec" type="number" min="0" max="59" value="0"> 秒</div>
@@ -313,6 +319,20 @@ addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('input,text
   else if(k==='Escape'){if(boardBig.classList.contains('open')){boardBig.classList.remove('open');return;}boardModal.classList.remove('open');grid.classList.remove('open');panel.classList.remove('open');qrModal.classList.remove('open');fwModal.classList.remove('open');tp.classList.remove('open');up.classList.remove('open');}});
 let tx=null;addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
 addEventListener('touchend',e=>{if(tx===null||panel.contains(e.target))return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)show(cur+(dx<0?1:-1));tx=null;});
+
+// ===== 破冰頁名單：現場可編輯（存在這台電腦）=====
+(()=>{const ol=document.querySelector('ol.roster');if(!ol)return;const KEY='roster1106',md=document.getElementById('rosterModal'),ta=document.getElementById('rosterTxt');
+const orig=[...ol.children].map(li=>[li.querySelector('span').textContent,li.lastChild.textContent]);
+const get=()=>{try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return null}};
+function render(a){ol.innerHTML='';a.forEach(([s,n])=>{const li=document.createElement('li'),sp=document.createElement('span');sp.textContent=s;li.appendChild(sp);li.appendChild(document.createTextNode(n));ol.appendChild(li);});ol.style.fontSize=a.length>16?Math.max(26,Math.floor(46*16/a.length))+'px':'';}
+const cur=()=>get()||orig;render(cur());
+const btn=document.createElement('button');btn.className='rosterEdit';btn.textContent='✏ 編輯名單';ol.closest('.slide').appendChild(btn);
+btn.onclick=()=>{ta.value=cur().map(x=>x.join(' ')).join('\n');md.classList.add('open');ta.focus();};
+document.getElementById('rosterCancel').onclick=()=>md.classList.remove('open');
+document.getElementById('rosterReset').onclick=()=>{ta.value=orig.map(x=>x.join(' ')).join('\n');};
+document.getElementById('rosterSave').onclick=()=>{const a=ta.value.split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{const i=l.search(/\s/);return i<0?['',l]:[l.slice(0,i),l.slice(i).trim()];});
+  try{localStorage.setItem(KEY,JSON.stringify(a))}catch(e){}render(a);md.classList.remove('open');};
+})();
 
 // ===== 小組討論板（B）：老師手機在 board/ 投稿 → ntfy.sh 中繼 → 這裡即時顯示 =====
 (()=>{const TOPIC='coplan1106-a4deb5500e',KEY='board1106v2',NQ=10;
