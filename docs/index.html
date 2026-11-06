@@ -496,17 +496,31 @@ addEventListener('keydown',e=>{if(!zb.classList.contains('open'))return;const k=
   e.preventDefault();e.stopImmediatePropagation();},true);
 })();
 
-// ===== 遙控翻頁：?remote=ctl（筆電，翻頁會送出）／?remote=view（投影電腦，跟著翻）；只同步頁碼 =====
+// ===== 遙控翻頁：?remote=ctl（筆電）／?remote=view（投影電腦）；同步頁碼與圖片放大 =====
+// 送「完整狀態」而非動作：停 0.3 秒才送最後狀態（亂切只送一則），失敗自動重送；投影端只套用序號較新的狀態
 (()=>{const mode=new URLSearchParams(location.search).get('remote');if(mode!=='ctl'&&mode!=='view')return;
 const CH='https://ntfy.sh/coplan1106-a4deb5500e-nav',badge=document.createElement('div');badge.id='remoteBadge';document.body.appendChild(badge);
-if(mode==='ctl'){badge.textContent='📡 遙控器';const _show=show;let last=-1,seq=Date.now();
-  show=function(i){_show(i);if(cur!==last){last=cur;fetch(CH,{method:'POST',body:String(cur)+'@'+(++seq)}).then(r=>badge.textContent=r.ok?'📡 遙控器・已同步 p'+slides[cur].dataset.label:'⚠️ 送出失敗').catch(()=>badge.textContent='⚠️ 送出失敗（網路）');}};
-  const _zo=zoomOpen,_zc=zoomClose,send=m=>fetch(CH,{method:'POST',body:m+'@'+(++seq)}).catch(()=>{});
-  zoomOpen=(s,k)=>{_zo(s,k);send('z:'+s+':'+k);};zoomClose=()=>{_zc();send('z:-');};
+if(mode==='ctl'){badge.textContent='📡 遙控器';let z=null,sent='',timer=0,busy=false,retry=0,seq=Date.now();
+  const state=()=>cur+':'+(z?z.join(':'):'-');
+  async function flush(force){clearTimeout(timer);const s=state();if(!force&&s===sent)return;if(busy){timer=setTimeout(()=>flush(force),200);return;}
+    busy=true;badge.textContent='📡 同步中…';
+    try{const r=await fetch(CH,{method:'POST',body:s+'@'+(++seq)});if(!r.ok)throw r.status;sent=s;retry=0;badge.textContent='📡 遙控器・已同步 p'+slides[cur].dataset.label;}
+    catch(e){retry++;badge.textContent='⚠️ 送出失敗（'+e+'），'+Math.min(retry*2,10)+' 秒後重試・按 Y 立即重送';timer=setTimeout(()=>flush(true),Math.min(retry*2000,10000));}
+    busy=false;if(state()!==sent&&!retry)flush();}
+  const later=()=>{clearTimeout(timer);timer=setTimeout(()=>flush(),300);};
+  const _show=show;show=function(i){_show(i);z=null;later();};
+  const _zo=zoomOpen,_zc=zoomClose;zoomOpen=(s,k)=>{_zo(s,k);z=[s,k];later();};zoomClose=()=>{_zc();z=null;later();};
+  addEventListener('keydown',e=>{if((e.key==='y'||e.key==='Y')&&!(e.target.closest&&e.target.closest('input,textarea'))){retry=0;flush(true);}});
 }
-else{let lastSeq=0;badge.textContent='📺 等待遙控…';const es=new EventSource(CH+'/sse?since=latest');
+else{let lastSeq=0;badge.textContent='📺 等待遙控…';
+  function apply(msg){const[m,sq]=msg.split('@');if(!+sq||+sq<=lastSeq)return;lastSeq=+sq;const[p,zs,zk]=m.split(':');const i=+p;
+    if(!(i>=0&&i<slides.length))return;if(i!==cur){zoomClose();show(i);}
+    if(zs==='-'||zs===undefined)zoomClose();else zoomOpen(+zs,+zk);}
+  const es=new EventSource(CH+'/sse?since=latest');
   es.onopen=()=>badge.textContent='📺 跟隨遙控中';es.onerror=()=>{badge.style.display='';badge.textContent='📺 重新連線中…'};
-  es.onmessage=e=>{try{const ev=JSON.parse(e.data);if(ev.event==='message'){const[m,sq]=ev.message.split('@');if(+sq&&+sq<=lastSeq)return;lastSeq=+sq||lastSeq;if(m.startsWith('z:')){if(m==='z:-')zoomClose();else{const[s,k]=m.slice(2).split(':').map(Number);if(s!==cur)show(s);zoomOpen(s,k);}return;}const i=+m;if(i>=0&&i<slides.length&&i!==cur){zoomClose();show(i);}}}catch(x){}};
+  es.onmessage=e=>{try{const ev=JSON.parse(e.data);if(ev.event==='message')apply(ev.message)}catch(x){}};
+  // 保險：每 20 秒對一次最新狀態（萬一漏收）
+  setInterval(()=>fetch(CH+'/json?poll=1&since=latest').then(r=>r.text()).then(t=>{const l=t.trim().split('\n').pop();if(l)apply(JSON.parse(l).message)}).catch(()=>{}),20000);
   setTimeout(()=>badge.style.display='none',8000);}
 })();
 
