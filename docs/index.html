@@ -482,7 +482,7 @@ es.onmessage=e=>{try{const ev=JSON.parse(e.data);if(ev.event==='message')add(ev,
 es.onerror=()=>{st.textContent='🟡 重新連線中…'};
 redraw();
 // 縮址（有縮址就改這裡；沒有就顯示完整網址）
-const SHORT='norason666.github.io/ai-coplan-115-1/board/';document.querySelectorAll('.bshort').forEach(x=>x.textContent=SHORT);
+const SHORT='is.gd/coplan1106';document.querySelectorAll('.bshort').forEach(x=>x.textContent=SHORT);
 const big=document.getElementById('boardBig');document.getElementById('boardQR').onclick=()=>big.classList.add('open');big.onclick=()=>big.classList.remove('open');
 window.toggleBoard=()=>bm.classList.toggle('open');
 document.getElementById('bBoard').onclick=toggleBoard;document.getElementById('boardClose').onclick=()=>bm.classList.remove('open');
