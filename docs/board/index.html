@@ -18,20 +18,29 @@ textarea{width:100%;min-height:180px;font:inherit;padding:12px;border:2px solid 
 <div class="g" id="q"></div>
 <div>2. 選你們的組別</div>
 <div class="g" id="g"></div>
-<div>3. 寫下討論結果（可以分次送，會顯示在簡報上）</div>
+<div>3. 寫下討論結果（每組每個主題一份；再按儲存會<b>取代</b>之前的版本）</div>
 <textarea id="t" maxlength="600" placeholder="例如：我們這組認為…"></textarea>
-<button id="send">送出到簡報</button>
+<button id="send">💾 儲存到簡報</button>
 <div id="msg"></div>
 <small>請勿填寫學生姓名等個資。</small>
 </main><script>
 const TOPIC='coplan1106-a4deb5500e';let grp=0,qn=0;
 const q=document.getElementById('q'),g=document.getElementById('g'),t=document.getElementById('t'),b=document.getElementById('send'),m=document.getElementById('msg');
 try{grp=+localStorage.getItem('grp')||0}catch(e){}
-for(let i=1;i<=5;i++){const x=document.createElement('button');x.textContent='第'+i+'組';x.onclick=()=>{grp=i;try{localStorage.setItem('grp',i)}catch(e){}draw()};g.appendChild(x)}
-for(let i=1;i<=10;i++){const x=document.createElement('button');x.textContent='主題'+i;x.style.fontSize='17px';x.onclick=()=>{qn=i;draw()};q.appendChild(x)}
+for(let i=1;i<=5;i++){const x=document.createElement('button');x.textContent='第'+i+'組';x.onclick=()=>{grp=i;try{localStorage.setItem('grp',i)}catch(e){}draw();load()};g.appendChild(x)}
+for(let i=1;i<=10;i++){const x=document.createElement('button');x.textContent='主題'+i;x.style.fontSize='17px';x.onclick=()=>{qn=i;draw();load()};q.appendChild(x)}
 function draw(){[...g.children].forEach((x,i)=>x.classList.toggle('on',i+1===grp));[...q.children].forEach((x,i)=>x.classList.toggle('on',i+1===qn))}draw();
+// 選好主題＋組別 → 帶出這組目前的版本來編輯（同組誰最後儲存就以誰為準）
+let dirty=false;t.oninput=()=>dirty=true;
+async function load(){if(!qn||!grp)return;const want=qn+'-'+grp;
+  if(dirty&&t.value.trim()&&!confirm('畫面上還沒儲存的內容會被換掉，確定？'))return;
+  m.className='';m.textContent='讀取這組目前的內容…';
+  try{const r=await fetch('https://ntfy.sh/'+TOPIC+'/json?poll=1&since=all');const lines=(await r.text()).trim().split('\n');let last=null;
+    for(const l of lines){try{const ev=JSON.parse(l);const d=JSON.parse(ev.message);if(+d.q===qn&&+d.g===grp)last=d}catch(e){}}
+    if(qn+'-'+grp!==want)return;t.value=last?last.t:'';dirty=false;m.textContent=last?'已載入第'+grp+'組目前的版本，可直接修改後儲存':'這組在主題'+qn+'還沒有內容';}
+  catch(e){m.className='err';m.textContent='讀取失敗（可直接輸入）';}}
 b.onclick=async()=>{const s=t.value.trim();if(!qn){m.className='err';m.textContent='請先選主題';return}if(!grp){m.className='err';m.textContent='請先選組別';return}if(!s){m.className='err';m.textContent='請先輸入內容';return}
 b.disabled=true;m.className='';m.textContent='送出中…';
 try{const r=await fetch('https://ntfy.sh/'+TOPIC,{method:'POST',body:JSON.stringify({q:qn,g:grp,t:s})});if(!r.ok)throw r.status;
-t.value='';m.className='ok';m.textContent='✅ 已送出（主題'+qn+'・第'+grp+'組）';}catch(e){m.className='err';m.textContent='送出失敗，請再試一次（'+e+'）'}b.disabled=false};
+dirty=false;m.className='ok';m.textContent='✅ 已儲存（主題'+qn+'・第'+grp+'組），簡報上已更新';}catch(e){m.className='err';m.textContent='送出失敗，請再試一次（'+e+'）'}b.disabled=false};
 </script></body></html>

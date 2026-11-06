@@ -230,7 +230,7 @@ ol.bul li::marker{font-weight:900;color:var(--blue)}
 #boardCols .col h4{margin:0;padding:8px;text-align:center;background:var(--navy);color:#fff;font:900 clamp(18px,3vh,34px) 'Noto Sans TC';border-radius:12px 12px 0 0}
 #boardCols .list{flex:1;overflow:auto;padding:10px 12px}
 #boardCols .item{font:700 calc(clamp(15px,2.3vh,28px)*var(--bfs,1))/1.45 'Noto Sans TC';cursor:zoom-in;color:#222;padding:8px 0;border-bottom:1px dashed #c7d3e3;white-space:pre-wrap;word-break:break-word}
-#boardCols .item.new{animation:bnew 2.5s}
+#boardCols .item.new{animation:bnew 2.5s}#boardCols .edits{font-size:13px;color:var(--muted);text-align:right;margin-top:4px}
 @keyframes bnew{0%{background:#ffe7b3}100%{background:transparent}}
 #boardStat{font-size:13px;color:var(--muted)}
 #boardTabs{flex-wrap:wrap;gap:6px!important}#boardTabs button{padding:4px 10px!important;font-size:clamp(14px,2.1vh,22px)!important}#boardTabs button em{font-style:normal;font-weight:700;font-size:.72em;margin-left:4px;max-width:6em;display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom}
@@ -482,11 +482,15 @@ let items=ls(KEY,[]),names=ls(KEY+'names',{}),fs=ls(KEY+'fs',1),curQ=1,spotList=
 const seen=new Set(items.map(x=>x.id));
 function setFs(v){fs=Math.max(.6,Math.min(2.6,Math.round(v*10)/10));bm.style.setProperty('--bfs',fs);spot.style.setProperty('--bfs',fs);ss(KEY+'fs',fs);}setFs(fs);
 const qName=q=>names[q]?`主題 ${q}：${names[q]}`:`主題 ${q}`;
-function drawTabs(){tabs.innerHTML=Array.from({length:NQ},(_,k)=>k+1).map(i=>{const n=items.filter(x=>x.q===i).length;return `<button data-q="${i}" class="${i===curQ?'act':''}" title="${qName(i)}">主題 ${i}<small>（${n}）</small>${names[i]?`<em>${names[i].replace(/[<&]/g,'')}</em>`:''}</button>`}).join('');ttl.textContent=names[curQ]?qName(curQ):'';}
+function drawTabs(){tabs.innerHTML=Array.from({length:NQ},(_,k)=>k+1).map(i=>{const n=Object.keys(latest(i)).length;return `<button data-q="${i}" class="${i===curQ?'act':''}" title="${qName(i)}">主題 ${i}<small>（${n}/5）</small>${names[i]?`<em>${names[i].replace(/[<&]/g,'')}</em>`:''}</button>`}).join('');ttl.textContent=names[curQ]?qName(curQ):'';}
 tabs.onclick=e=>{const b=e.target.closest('button');if(b)setQ(+b.dataset.q);};
 function setQ(q){curQ=q;redraw();}
-function put(x,fresh){const el=document.createElement('div');el.className='item'+(fresh?' new':'');el.textContent=x.t;el.dataset.id=x.id;const l=$('bl'+x.g);l.appendChild(el);l.scrollTop=l.scrollHeight;}
-function redraw(){for(let i=1;i<=5;i++)$('bl'+i).innerHTML='';items.filter(x=>x.q===curQ).forEach(x=>put(x,false));drawTabs();}
+// 每組每主題只算最新一版（手機端是「編輯」）
+const latest=q=>{const m={};items.filter(x=>x.q===q).forEach(x=>m[x.g]=x);return m;};
+const edits=(q,g)=>items.filter(x=>x.q===q&&x.g===g).length;
+function put(x,fresh){const l=$('bl'+x.g);l.innerHTML='';const el=document.createElement('div');el.className='item'+(fresh?' new':'');el.textContent=x.t;el.dataset.id=x.id;l.appendChild(el);
+  const n=edits(x.q,x.g);if(n>1){const s=document.createElement('div');s.className='edits';s.textContent='已修改 '+(n-1)+' 次';l.appendChild(s);}}
+function redraw(){for(let i=1;i<=5;i++)$('bl'+i).innerHTML='';Object.values(latest(curQ)).forEach(x=>put(x,false));drawTabs();}
 function add(ev,fresh){if(seen.has(ev.id))return;seen.add(ev.id);let d;try{d=JSON.parse(ev.message)}catch(e){return}
   const x={id:ev.id,time:ev.time,q:+d.q||1,g:+d.g,t:String(d.t||'')};if(!(x.g>=1&&x.g<=5&&x.q>=1&&x.q<=NQ)||!x.t)return;
   items.push(x);items.sort((a,b)=>a.time-b.time);ss(KEY,items);if(x.q===curQ)put(x,fresh);drawTabs();}
@@ -496,7 +500,7 @@ es.onmessage=e=>{try{const ev=JSON.parse(e.data);if(ev.event==='message')add(ev,
 es.onerror=()=>{st.textContent='🟡 重新連線中…'};
 redraw();
 // 點一則 → 放大；◀ ▶ 在同主題內依組別切換
-function openSpot(id){spotList=items.filter(x=>x.q===curQ).sort((a,b)=>a.g-b.g||a.time-b.time);spotI=Math.max(0,spotList.findIndex(x=>x.id===id));drawSpot();spot.classList.add('open');}
+function openSpot(id){spotList=Object.values(latest(curQ)).sort((a,b)=>a.g-b.g);spotI=Math.max(0,spotList.findIndex(x=>x.id===id));drawSpot();spot.classList.add('open');}
 function drawSpot(){const x=spotList[spotI];if(!x)return;spot.querySelector('.who').textContent=qName(x.q)+'｜第 '+x.g+' 組';spot.querySelector('.txt').textContent=x.t;spot.querySelector('.pos').textContent=(spotI+1)+' / '+spotList.length;}
 function step(d){if(!spotList.length)return;spotI=(spotI+d+spotList.length)%spotList.length;drawSpot();}
 cols.onclick=e=>{const it=e.target.closest('.item');if(it){openSpot(it.dataset.id);return;}
@@ -523,7 +527,7 @@ addEventListener('keydown',e=>{if(!bm.classList.contains('open')||(e.target.clos
   if(done){e.preventDefault();e.stopImmediatePropagation();}},true);
 $('boardDl').onclick=()=>{let s='# 115-1 港湖區分區共備 小組討論紀錄（'+new Date().toLocaleString('zh-TW')+' 匯出）\n';
   for(let q=1;q<=NQ;q++){const a=items.filter(x=>x.q===q);if(!a.length)continue;s+='\n## '+qName(q)+'\n';
-    for(let g=1;g<=5;g++){const b=a.filter(x=>x.g===g);if(!b.length)continue;s+='\n### 第 '+g+' 組\n';b.forEach(x=>s+='- '+new Date(x.time*1000).toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'})+'　'+x.t.replace(/\n/g,' ')+'\n');}}
+    const L=latest(q);for(let g=1;g<=5;g++){const x=L[g];if(!x)continue;s+='\n### 第 '+g+' 組（'+new Date(x.time*1000).toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'})+' 最後修改）\n\n'+x.t+'\n';}}
   const u=URL.createObjectURL(new Blob([s],{type:'text/markdown'}));const l=document.createElement('a');l.href=u;l.download='小組討論紀錄_1106.md';l.click();};
 })();
 
