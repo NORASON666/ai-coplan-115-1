@@ -233,6 +233,7 @@ ol.bul li::marker{font-weight:900;color:var(--blue)}
 #boardCols .item.new{animation:bnew 2.5s}#boardCols .edits{font-size:13px;color:var(--muted);text-align:right;margin-top:4px}
 @keyframes bnew{0%{background:#ffe7b3}100%{background:transparent}}
 #boardStat{font-size:13px;color:var(--muted)}
+#remoteBadge{position:fixed;left:10px;bottom:10px;z-index:60;font:700 13px 'Noto Sans TC';padding:4px 10px;border-radius:999px;background:var(--navy);color:#fff;opacity:.75;pointer-events:none}
 .rosterEdit{position:absolute;right:60px;bottom:40px;font:700 16px 'Noto Sans TC';padding:6px 14px;border-radius:10px;border:2px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;opacity:.35}.rosterEdit:hover{opacity:1}
 #rosterModal{position:fixed;inset:0;background:rgba(20,35,65,.72);z-index:48;display:none;align-items:center;justify-content:center}#rosterModal.open{display:flex}
 #rosterModal .box{background:#fff;border-radius:22px;padding:22px 26px;width:min(560px,92vw)}#rosterModal h5{margin:0 0 6px;font:900 22px 'Noto Sans TC';color:var(--navy)}#rosterModal p{margin:0 0 8px;font-size:14px;color:var(--muted)}
@@ -319,6 +320,18 @@ addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('input,text
   else if(k==='Escape'){if(boardBig.classList.contains('open')){boardBig.classList.remove('open');return;}boardModal.classList.remove('open');grid.classList.remove('open');panel.classList.remove('open');qrModal.classList.remove('open');fwModal.classList.remove('open');tp.classList.remove('open');up.classList.remove('open');}});
 let tx=null;addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
 addEventListener('touchend',e=>{if(tx===null||panel.contains(e.target))return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)show(cur+(dx<0?1:-1));tx=null;});
+
+// ===== 遙控翻頁：?remote=ctl（筆電，翻頁會送出）／?remote=view（投影電腦，跟著翻）；只同步頁碼 =====
+(()=>{const mode=new URLSearchParams(location.search).get('remote');if(mode!=='ctl'&&mode!=='view')return;
+const CH='https://ntfy.sh/coplan1106-a4deb5500e-nav',badge=document.createElement('div');badge.id='remoteBadge';document.body.appendChild(badge);
+if(mode==='ctl'){badge.textContent='📡 遙控器';const _show=show;let last=-1;
+  show=function(i){_show(i);if(cur!==last){last=cur;fetch(CH,{method:'POST',body:String(cur)}).then(r=>badge.textContent=r.ok?'📡 遙控器・已同步 p'+slides[cur].dataset.label:'⚠️ 送出失敗').catch(()=>badge.textContent='⚠️ 送出失敗（網路）');}};
+  show(cur);}
+else{badge.textContent='📺 等待遙控…';const es=new EventSource(CH+'/sse?since=latest');
+  es.onopen=()=>badge.textContent='📺 跟隨遙控中';es.onerror=()=>{badge.style.display='';badge.textContent='📺 重新連線中…'};
+  es.onmessage=e=>{try{const ev=JSON.parse(e.data);if(ev.event==='message'){const i=+ev.message;if(i>=0&&i<slides.length&&i!==cur)show(i);}}catch(x){}};
+  setTimeout(()=>badge.style.display='none',8000);}
+})();
 
 // ===== 破冰頁名單：現場可編輯（存在這台電腦）=====
 (()=>{const ol=document.querySelector('ol.roster');if(!ol)return;const KEY='roster1106',md=document.getElementById('rosterModal'),ta=document.getElementById('rosterTxt');
