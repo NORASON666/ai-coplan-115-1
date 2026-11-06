@@ -501,7 +501,8 @@ addEventListener('keydown',e=>{if(!zb.classList.contains('open'))return;const k=
 (()=>{const mode=new URLSearchParams(location.search).get('remote');if(mode!=='ctl'&&mode!=='view')return;
 const CH='https://ntfy.sh/coplan1106-a4deb5500e-nav',badge=document.createElement('div');badge.id='remoteBadge';document.body.appendChild(badge);
 if(mode==='ctl'){badge.textContent='📡 遙控器';let z=null,sent='',timer=0,busy=false,retry=0,seq=Date.now();
-  const state=()=>cur+':'+(z?z.join(':'):'-');
+  const state=()=>cur+':'+(z?z.join(':'):'-')+':'+(fwModal.classList.contains('open')?fwCur:'x');
+  setInterval(()=>{if(state()!==sent&&!busy&&!retry)later();},400); // 四問視窗等其他狀態變化也會送
   async function flush(force){clearTimeout(timer);const s=state();if(!force&&s===sent)return;if(busy){timer=setTimeout(()=>flush(force),200);return;}
     busy=true;badge.textContent='📡 同步中…';
     try{const r=await fetch(CH,{method:'POST',body:s+'@'+(++seq)});if(!r.ok)throw r.status;sent=s;retry=0;badge.textContent='📡 遙控器・已同步 p'+slides[cur].dataset.label;}
@@ -513,9 +514,10 @@ if(mode==='ctl'){badge.textContent='📡 遙控器';let z=null,sent='',timer=0,b
   addEventListener('keydown',e=>{if((e.key==='y'||e.key==='Y')&&!(e.target.closest&&e.target.closest('input,textarea'))){retry=0;flush(true);}});
 }
 else{let lastSeq=0;badge.textContent='📺 等待遙控…';
-  function apply(msg){const[m,sq]=msg.split('@');if(!+sq||+sq<=lastSeq)return;lastSeq=+sq;const[p,zs,zk]=m.split(':');const i=+p;
+  function apply(msg){const[m,sq]=msg.split('@');if(!+sq||+sq<=lastSeq)return;lastSeq=+sq;const f=m.split(':'),p=f[0],fw=f[f.length-1],zs=f[1],zk=f[2];const i=+p;
     if(!(i>=0&&i<slides.length))return;if(i!==cur){zoomClose();show(i);}
-    if(zs==='-'||zs===undefined)zoomClose();else zoomOpen(+zs,+zk);}
+    if(zs==='-'||zs===undefined)zoomClose();else zoomOpen(+zs,+zk);
+    if(fw==='x')fwModal.classList.remove('open');else if(/^[01]$/.test(fw))toggleFW(+fw);}
   const es=new EventSource(CH+'/sse?since=latest');
   es.onopen=()=>badge.textContent='📺 跟隨遙控中';es.onerror=()=>{badge.style.display='';badge.textContent='📺 重新連線中…'};
   es.onmessage=e=>{try{const ev=JSON.parse(e.data);if(ev.event==='message')apply(ev.message)}catch(x){}};
